@@ -2,7 +2,6 @@ import argparse
 import sys
 
 # It looks like that 'oneight' is equal to '1.*8' not '1ight'.
-# Is the very young Elf sane?
 
 
 def replace_number_letters(s):
