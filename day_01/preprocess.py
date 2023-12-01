@@ -28,9 +28,10 @@ def replace_number_letters(s):
         )
 
 
-parser = argparse.ArgumentParser()
-parser.add_argument('infile', nargs='?', type=argparse.FileType(), default=sys.stdin)
-args = parser.parse_args()
-with args.infile as f:
-    for line in f:
-        print(replace_number_letters(line), end='')
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('infile', nargs='?', type=argparse.FileType(), default=sys.stdin)
+    args = parser.parse_args()
+    with args.infile as f:
+        for line in f:
+            print(replace_number_letters(line), end='')
