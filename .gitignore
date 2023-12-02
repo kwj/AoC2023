@@ -1,2 +1,5 @@
 input
 *.txt
+.lsp
+.clj-kondo
+.cpcache
