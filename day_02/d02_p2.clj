@@ -1,9 +1,9 @@
+#!/usr/bin/env bb
+
 ;;;; # Day 2: Part two
 
-(ns d02-p2
-  (:require
-   [clojure.java.io :as io]
-   [clojure.string :as str]))
+(require '[clojure.java.io :as io])
+(require '[clojure.string :as str])
 
 (defn- make-game-info
   [line]
@@ -21,11 +21,8 @@
      (get-in game [:max-cubes :blue] 1)
      (get-in game [:max-cubes :green] 1)))
 
-(defn d02-p2
-  [fname]
-  (->> (map make-game-info (line-seq (io/reader fname)))
+(when (seq *command-line-args*)
+  (->> (map make-game-info (line-seq (io/reader (first *command-line-args*))))
        (map power-cubes)
-       (apply +)))
-
-;;; user=> (d02-p2 "input")
-
+       (apply +)
+       (println)))
