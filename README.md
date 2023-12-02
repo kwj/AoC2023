@@ -4,8 +4,8 @@ URL: https://adventofcode.com/2023
 
 ## Solutions
 
-* [Day 1](./day_01/README.md)
-* [Day 2](./day_02/README.md)
+* [Day 1](./day_01/)
+* [Day 2](./day_02/)
 
 ## Note
 
