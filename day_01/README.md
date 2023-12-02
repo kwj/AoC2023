@@ -3,7 +3,7 @@
 ## Requirement
 
 * Unix commands [sh(1), sed(1), paste(1), bc(1)]
-* Python (confirmed to work with Python 3.11)
+* Python 3 (confirmed to work with Python 3.11)
 
 ## How to use
 
