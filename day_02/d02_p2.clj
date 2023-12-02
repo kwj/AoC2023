@@ -5,7 +5,8 @@
 (require '[clojure.java.io :as io])
 (require '[clojure.string :as str])
 
-;;; user=> (make-game-info "Game 10: 2 red, 9 green, 8 blue; 16 green, 1 red, 7 blue; 3 blue, 5 red, 9 green; 5 blue, 2 red, 11 green")                                                                  ;;; {:number 10, :cubes {:red 5, :green 16, :blue 8}}
+;;; user=> (make-game-info "Game 10: 2 red, 9 green, 8 blue; 16 green, 1 red, 7 blue; 3 blue, 5 red, 9 green; 5 blue, 2 red, 11 green")
+;;; {:game 10, :cubes {:red 5, :green 16, :blue 8}}
 (defn- make-game-info
   "Return a map of game information which has game number and minimum required number of cubes by each color."
   [line]
@@ -15,7 +16,7 @@
                    (partition 2)
                    (map (fn [[v k]] {(keyword k) (parse-long v)}))
                    (apply merge-with (fn [n1 n2] (max n1 n2))))]
-    {:number game-number :cubes cubes}))
+    {:game game-number :cubes cubes}))
 
 (defn- power-cubes
   [game]
