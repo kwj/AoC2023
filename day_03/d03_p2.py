@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Day 3: Part two
 
 # Actually, this implementation is incomplete. It does not support numbers
