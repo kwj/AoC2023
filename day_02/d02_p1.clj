@@ -11,9 +11,9 @@
   It has the game number and minimum required number of cubes by each color.
   example: {:game 10, :cubes {:red 5, :green 16, :blue 8}}"
   [line]
-  (let [[header game-data] (str/split line #": ")
+  (let [[header cube-data] (str/split line #": ")
         game-number (parse-long (nth (str/split header #" ") 1))
-        cubes (->> (re-seq #"[^,;\s]+" game-data)
+        cubes (->> (re-seq #"[^,;\s]+" cube-data)
                    (partition 2)
                    (map (fn [[v k]] {(keyword k) (parse-long v)}))
                    (apply merge-with (fn [n1 n2] (max n1 n2))))]
