@@ -17,7 +17,7 @@ def make_data(lines):
         return None
 
 
-def find_pos_adj_symbol(data, pos, length, offset, re_symbol):
+def find_pos_of_adj_symbol(data, pos, length, offset, re_symbol):
     upper = data[(pos - offset - 1) : (pos - offset - 1 + (length + 2))]
     if (m := re.search(re_symbol, upper)) is not None:
         return (pos - offset - 1) + m.start()
@@ -55,7 +55,7 @@ if __name__ == '__main__':
 
     for m in re.finditer(r'[0-9]+', data):
         if (
-            _ := find_pos_adj_symbol(
+            _ := find_pos_of_adj_symbol(
                 data, m.start(), m.end() - m.start(), offset, r'[^0-9.]'
             )
         ) is not None:
