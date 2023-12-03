@@ -8,8 +8,9 @@
 (defn- make-game-info
   "Return a map of game information.
 
-  It has the game number and minimum required number of cubes by each color.
-  example: {:game 10, :cubes {:red 5, :green 16, :blue 8}}"
+    {:game 10, :cubes {:red 5, :green 16, :blue 8}}
+
+  It has the game number and minimum required numbers of cubes by each color."
   [line]
   (let [[header cube-data] (str/split line #": ")
         game-number (parse-long (nth (str/split header #" ") 1))
