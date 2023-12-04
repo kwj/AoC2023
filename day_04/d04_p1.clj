@@ -12,7 +12,7 @@
 
     {:card 1, :win #{86 48 41 17 83}, :own #{86 48 31 6 17 9 83 53} :cnt 4}
 
-  It has the card number, winning numbers, own numbers and number of matching numbers."
+  It has the card number, winning numbers, own numbers and number of matched numbers."
   [line]
   (let [[header win mine] (str/split line #" *[:|] ")
         card-number (parse-long (nth (str/split header #" +") 1))
