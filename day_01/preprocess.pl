@@ -15,7 +15,7 @@ sub replace_number_letters {
         my $offset = $cands[0][0];
         my $num = $cands[0][2];
         substr($s, $offset, 1, "$num");
-        replace_number_letters($s);
+        return replace_number_letters($s);
     }
 }
 
