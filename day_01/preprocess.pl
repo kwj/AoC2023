@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 
-# It looks like that 'oneight' is equal to '1.*8' not '1ight'.
+# It looks like that 'oneight' is equal to '1.*8.*' not '1ight'.
 
 use strict;
 use warnings;
