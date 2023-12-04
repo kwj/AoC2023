@@ -2,7 +2,7 @@
 
 ## Requirement
 
-* Python 3 (confirmed to work with Python 3.11)
+* Python 3 (confirmed to work with Python 3.12.0)
 
 ## How to use
 
