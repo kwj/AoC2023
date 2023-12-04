@@ -31,7 +31,6 @@
 
 (when (seq *command-line-args*)
   (->> (map make-card-info (line-seq (io/reader (first *command-line-args*))))
-       (map #(get % :cnt))
-       (map calc-point)
+       (map #(calc-point (get % :cnt)))
        (apply +)
        (println)))
