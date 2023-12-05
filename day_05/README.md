@@ -6,13 +6,13 @@
 
 ## How to use
 
-1. Read the source file in REPL
+### Read the source file in REPL
 
 ```console
 julia> include("d05.jl")
 ```
 
-2. Run each solver with the name of the puzzle data file as an argument.
+### Run each solver with the name of the puzzle data file as an argument.
 
 *Part one*
 
