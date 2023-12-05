@@ -1,4 +1,4 @@
-input
+input*
 *.txt
 .lsp
 .clj-kondo
