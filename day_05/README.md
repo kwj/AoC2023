@@ -12,7 +12,7 @@
 julia> include("d05.jl")
 ```
 
-### Run each solver with the name of the puzzle data file as an argument.
+### Run each solver with the name of the puzzle data file as an argument
 
 *Part one*
 
