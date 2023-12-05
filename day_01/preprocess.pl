@@ -6,7 +6,7 @@
 #   'one' -> 'one1one'
 #   'oneight' -> 'one1oneight8eight'
 
-use v5.12;
+use v5.12;  # The `each` function was introduced in Perl 5.12
 use strict;
 use warnings;
 
