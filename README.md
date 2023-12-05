@@ -8,6 +8,7 @@ URL: https://adventofcode.com/2023
 * [Day 2](./day_02/)
 * [Day 3](./day_03/)
 * [Day 4](./day_04/)
+* [Day 5](./day_05/)
 
 ## Note
 
