@@ -25,7 +25,3 @@ my @record = split(/\s+/, <>);
 shift @record;
 
 print((reduce { $a * $b } map { my ($t, $d) = @$_; get_nways($t, $d) } (zip \@limit, \@record)) . "\n");
-
-
-
-
