@@ -14,7 +14,7 @@ end
 mutable struct RangeMap
     src_start::Int64
     src_stop::Int64
-    dst_offset::Int64
+    delta::Int64
 end
 
 mutable struct CategoryMap
@@ -81,8 +81,8 @@ end
 function get_next_ranges(src_range::Range, r_maps::Array{RangeMap})
     next_r_maps = Iterators.takewhile(r -> src_range.stop >= r.src_start,
                                       Iterators.dropwhile(r -> src_range.start > r.src_stop, r_maps))
-    collect(map(r_map -> Range(max(src_range.start, r_map.src_start) + r_map.dst_offset,
-                               min(src_range.stop, r_map.src_stop) + r_map.dst_offset),
+    collect(map(r_map -> Range(max(src_range.start, r_map.src_start) + r_map.delta,
+                               min(src_range.stop, r_map.src_stop) + r_map.delta),
                 next_r_maps))
 end
 
