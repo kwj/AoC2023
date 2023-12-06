@@ -5,7 +5,7 @@
 use strict;
 use warnings;
 
-use List::Util qw(reduce sum zip);
+use List::Util qw(reduce zip);
 use POSIX qw(ceil floor);
 
 sub get_nways {
