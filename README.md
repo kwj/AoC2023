@@ -4,13 +4,13 @@ URL: https://adventofcode.com/2023
 
 ## Solutions
 
-* [Day 1](./day_01/)
-* [Day 2](./day_02/)
-* [Day 3](./day_03/)
-* [Day 4](./day_04/)
-* [Day 5](./day_05/)
-* [Day 6](./day_06/)
-* [Day 7](./day_07/)
+* [Day 1: Trebuchet?!](./day_01/)
+* [Day 2: Cube Conundrum](./day_02/)
+* [Day 3: Gear Ratios ](./day_03/)
+* [Day 4: Scratchcards](./day_04/)
+* [Day 5: If You Give A Seed A Fertilizer](./day_05/)
+* [Day 6: Wait For It](./day_06/)
+* [Day 7: Camel Cards](./day_07/)
 
 ## Note
 
