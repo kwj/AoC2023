@@ -21,7 +21,7 @@
       (first lst)
       -1)))
 
-(def ^:private hand-pattern
+(def ^:private hand-patterns
   ;; 0: High Card - [1 1 1 1 1]
   ;; 1: One Pair [2 1 1 1]
   ;; 2: Two Pairs [2 2 1]
@@ -38,11 +38,10 @@
   [card]
   (let [nums (->> (seq card) (map ch->num))
         pattern (->> (sort nums)
-                     (reverse)
                      (partition-by identity)
                      (map count)
                      (sort #(compare %2 %1)))]
-    [(index-of hand-pattern pattern) (vec nums)]))
+    [(index-of hand-patterns pattern) (vec nums)]))
 
 (defn- parse-line
   [line]
