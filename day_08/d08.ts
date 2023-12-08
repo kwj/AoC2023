@@ -90,11 +90,11 @@ class Navigator {
   }
 }
 
-function part_one(nav: Navigator): number {
+function part_one(nav: Navigator): void {
   console.log(nav.get_steps("AAA", "ZZZ"));
 }
 
-function part_two(nav: Navigator): number {
+function part_two(nav: Navigator): void {
   const start_iter = nav.next_map.keys().filter((word) => word.endsWith("A"));
   const cycle_info = start_iter.map((start) => nav.get_cycle_info(start)).toArray();
 
