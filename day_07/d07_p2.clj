@@ -44,14 +44,20 @@
     [(index-of hand-patterns pattern) (vec nums)]))
 
 (defn- get-hand
+  "Return a hand information (Joker-enabled version).
+
+  example:
+    [without Joker] 32T3K -> [1 [3 2 10 3 13]]
+    [with Joker]    KTJJT -> [5 [13 10 1 1 10]]
+      max_rank(KTJJT, KTKKT, KTTTT) = max(2, 4, 5) = 5"
   [card]
   (let [card-set (set (str/split card #""))]
     (if (contains? card-set "J")
-      (let [new-hand (->> (map #(str/replace card "J" %) card-set)
+      (let [max-rank (->> (map #(str/replace card "J" %) card-set)
                           (map get-hand-aux)
-                          (sort #(compare %2 %1))
+                          (apply max-key first)
                           (first))]
-        [(first new-hand) (vec (map ch->num (seq card)))])
+        [max-rank (vec (map ch->num (seq card)))])
       (get-hand-aux card))))
 
 (defn- parse-line
