@@ -4,8 +4,6 @@
 
 * [Deno](https://deno.com/) (confirmed to work with Deno v1.38.5)
 
-> Note: This program may be easily ported to other runtimes, such as Node.js.
-
 ## How to use
 
 *Part one*
