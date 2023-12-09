@@ -1,15 +1,9 @@
 /* Day 8 */
 
-function gcd(x: number, y: number): number {
-  if (y === 0) {
-    return x;
-  } else {
-    return gcd(y, x % y);
-  }
-}
-
-function lcm(x: number, y: number): number {
-  return (x / gcd(x, y)) * y;
+interface CycleInfo {
+  lam: number;
+  mu: number;
+  ends: number[];
 }
 
 class Navigator {
@@ -48,7 +42,7 @@ class Navigator {
     Brent's algorithm for cycle detection
     https://en.wikipedia.org/wiki/Cycle_detection#Brent's_algorithm
   */
-  get_cycle_info(start: string): {lam: number, mu: number, ends: number[]} {
+  get_cycle_info(start: string): CycleInfo {
     let power = 1;
     let lam = 1;
     let t_idx = 0;
@@ -88,6 +82,18 @@ class Navigator {
 
     return {lam: lam, mu: t_idx, ends: ends};
   }
+}
+
+function gcd(x: number, y: number): number {
+  if (y === 0) {
+    return x;
+  } else {
+    return gcd(y, x % y);
+  }
+}
+
+function lcm(x: number, y: number): number {
+  return (x / gcd(x, y)) * y;
 }
 
 function part_one(nav: Navigator): void {
