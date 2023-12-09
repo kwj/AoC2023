@@ -4,7 +4,7 @@ interface CycleInfo {
   node: string;
   lam: number;
   mu: number;
-  ends: number[];
+  ends: [number, string][];
 }
 
 class Navigator {
@@ -48,14 +48,14 @@ class Navigator {
     let lam = 1;
     let t_idx = 0;
     let h_idx = 0;
-    let ends: number[] = [];
+    let ends: [number, string][] = [];
 
     let tortoise = start;
     let hare = this.next_map.get(start)![this.instr[h_idx % this.instr_len]];
     h_idx += 1;
     while (tortoise !== hare || t_idx % this.instr_len !== h_idx % this.instr_len) {
       if (hare.endsWith("Z") === true) {
-        ends.push(h_idx);
+        ends.push([h_idx, hare]);
       }
       if (power === lam) {
         tortoise = hare;
@@ -105,9 +105,10 @@ function part_two(nav: Navigator): void {
   const start_nodes = [...nav.next_map.keys()].filter((word) => word.endsWith("A"));
   const cycle_info = start_nodes.map((node) => nav.get_cycle_info(node));
 
-  if (cycle_info.every((info) => info.lam === info.ends[0]) === true) {
-    // Check if either each cycle length is equal to the distance from the starting node
-    // to the last node whose name ends `Z`. If so, calculate the LCM of all length of cycles.
+  if (cycle_info.every((info) => info.lam === info.ends[0][0]) === true) {
+    // Check if either each cycle length is equal to the distance from
+    // the starting node to the first node whose name ends with `Z`.
+    // If so, calculate the LCM of all length of cycles.
     console.log(cycle_info.reduce((acc, info) => lcm(acc, info.lam), 1));
   } else {
     // In other cases, I think the Chinese remainder theorem could be used
