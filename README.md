@@ -12,6 +12,7 @@ URL: https://adventofcode.com/2023
 * [Day 6: Wait For It](./day_06/)
 * [Day 7: Camel Cards](./day_07/)
 * [Day 8: Haunted Wasteland](./day_08/)
+* [Day 9: Mirage Maintenance](./day_09/)
 
 ## Note
 
