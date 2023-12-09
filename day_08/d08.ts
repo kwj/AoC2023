@@ -73,7 +73,7 @@ class Navigator {
       hare = this.next_map.get(hare)![this.instr[h_idx % this.instr_len]];
     }
     t_idx = 0;
-    while (tortoise !== hare) {
+    while (tortoise !== hare || t_idx % this.instr_len !== h_idx % this.instr_len) {
       tortoise = this.next_map.get(tortoise)![this.instr[t_idx % this.instr_len]];
       t_idx += 1;
       hare = this.next_map.get(hare)![this.instr[h_idx % this.instr_len]];
