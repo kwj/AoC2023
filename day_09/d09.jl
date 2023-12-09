@@ -18,4 +18,3 @@ end
 end #module
 
 using .Day09: d09_p1, d09_p2
-export d09_p1, d09_p2
