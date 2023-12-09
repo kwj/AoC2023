@@ -1,6 +1,7 @@
 /* Day 8 */
 
 interface CycleInfo {
+  node: string;
   lam: number;
   mu: number;
   ends: number[];
@@ -80,7 +81,7 @@ class Navigator {
       h_idx += 1;
     }
 
-    return {lam: lam, mu: t_idx, ends: ends};
+    return {node: start, lam: lam, mu: t_idx, ends: ends};
   }
 }
 
