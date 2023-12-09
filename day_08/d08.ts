@@ -30,7 +30,7 @@ class Navigator {
     let idx = 0;
     let crnt = start;
     while (crnt !== target) {
-      crnt = this.next_map.get(crnt)[this.instr[idx]];
+      crnt = this.next_map.get(crnt)![this.instr[idx]];
       steps += 1;
       idx = steps % this.instr_len;
     }
@@ -47,10 +47,10 @@ class Navigator {
     let lam = 1;
     let t_idx = 0;
     let h_idx = 0;
-    let ends: string[] = [];
+    let ends: number[] = [];
 
     let tortoise = start;
-    let hare = this.next_map.get(start)[this.instr[h_idx % this.instr_len]];
+    let hare = this.next_map.get(start)![this.instr[h_idx % this.instr_len]];
     h_idx += 1;
     while (tortoise !== hare || t_idx % this.instr_len !== h_idx % this.instr_len) {
       if (hare.endsWith("Z") === true) {
@@ -62,7 +62,7 @@ class Navigator {
 	power *= 2;
 	lam = 0;
       }
-      hare = this.next_map.get(hare)[this.instr[h_idx % this.instr_len]];
+      hare = this.next_map.get(hare)![this.instr[h_idx % this.instr_len]];
       h_idx += 1;
       lam += 1;
     }
@@ -70,13 +70,13 @@ class Navigator {
     tortoise = start;
     hare = start;
     for (h_idx = 0; h_idx < lam; h_idx++) {
-      hare = this.next_map.get(hare)[this.instr[h_idx % this.instr_len]];
+      hare = this.next_map.get(hare)![this.instr[h_idx % this.instr_len]];
     }
     t_idx = 0;
     while (tortoise !== hare) {
-      tortoise = this.next_map.get(tortoise)[this.instr[t_idx % this.instr_len]];
+      tortoise = this.next_map.get(tortoise)![this.instr[t_idx % this.instr_len]];
       t_idx += 1;
-      hare = this.next_map.get(hare)[this.instr[h_idx % this.instr_len]];
+      hare = this.next_map.get(hare)![this.instr[h_idx % this.instr_len]];
       h_idx += 1;
     }
 
@@ -101,8 +101,8 @@ function part_one(nav: Navigator): void {
 }
 
 function part_two(nav: Navigator): void {
-  const start_iter = nav.next_map.keys().filter((word) => word.endsWith("A"));
-  const cycle_info = start_iter.map((start) => nav.get_cycle_info(start)).toArray();
+  const start_nodes = [...nav.next_map.keys()].filter((word) => word.endsWith("A"));
+  const cycle_info = start_nodes.map((node) => nav.get_cycle_info(node));
 
   if (cycle_info.every((info) => info.lam === info.ends[0]) === true) {
     // Check if either each cycle length is equal to the distance from the starting node
@@ -111,7 +111,7 @@ function part_two(nav: Navigator): void {
   } else {
     // In other cases, I think the Chinese remainder theorem could be used
     // to solve the problem, but I give up for now.
-    console.lgo("This input data can't be solved by this solver.");
+    console.log("This input data can't be solved by this solver.");
     console.log("[cycle information]");
     console.log(cycle_info);
   }
