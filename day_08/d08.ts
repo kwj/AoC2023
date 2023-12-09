@@ -98,11 +98,13 @@ function part_two(nav: Navigator): void {
   const start_iter = nav.next_map.keys().filter((word) => word.endsWith("A"));
   const cycle_info = start_iter.map((start) => nav.get_cycle_info(start)).toArray();
 
-  // Check each final node's name in cycle is confirmed to end at `Z` or not.
-  // If so, calculate the LCM of all length of cycles.
   if (cycle_info.every((info) => info.lam === info.ends[0]) === true) {
+    // Check each final node's name in cycle is confirmed to end at `Z` or not.
+    // If so, calculate the LCM of all length of cycles.
     console.log(cycle_info.reduce((acc, info) => lcm(acc, info.lam), 1));
   } else {
+    // In other cases, I think the Chinese remainder theorem could be used
+    // to solve the problem, but I'll give up for now.
     console.lgo("This input data can't be solved by this solver.");
     console.log("[cycle information]");
     console.log(cycle_info);
