@@ -10,9 +10,7 @@ import sys
 def make_data(lines):
     line_len = len(lines[0])
     if all(len(x) == line_len for x in lines) is True:
-        return line_len + 2, '.' * (line_len + 3) + '..'.join(lines) + '.' * (
-            line_len + 3
-        )
+        return line_len + 2, '.' * (line_len + 3) + '..'.join(lines) + '.' * (line_len + 3)
     else:
         return None
 
