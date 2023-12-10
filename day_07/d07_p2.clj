@@ -63,12 +63,12 @@
 (defn- parse-line
   [line]
   (let [[card bid] (str/split line #" ")]
-    {:hand (get-rank-with-wildcard card) :bid (parse-long bid) :card card}))
+    {:rank (get-rank-with-wildcard card) :bid (parse-long bid) :hand card}))
 
 (when (seq *command-line-args*)
   (->> (line-seq (io/reader (first *command-line-args*)))
        (map parse-line)
-       (sort-by :hand compare)
+       (sort-by :rank compare)
        (map-indexed #(* (inc %1) (:bid %2)))
        (apply +)
        (println)))
