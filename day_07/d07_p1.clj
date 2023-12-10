@@ -49,7 +49,8 @@
     {:hand (get-rank card) :bid (parse-long bid) :card card}))
 
 (when (seq *command-line-args*)
-  (->> (map parse-line (line-seq (io/reader (first *command-line-args*))))
+  (->> (line-seq (io/reader (first *command-line-args*)))
+       (map parse-line)
        (sort-by :hand compare)
        (map-indexed #(* (inc %1) (:bid %2)))
        (apply +)

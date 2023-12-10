@@ -27,7 +27,8 @@
        (<= (get-in game [:cubes :green] 0) (get thr-map :green))))
 
 (when (seq *command-line-args*)
-  (->> (map make-game-info (line-seq (io/reader (first *command-line-args*))))
+  (->> (line-seq (io/reader (first *command-line-args*)))
+       (map make-game-info)
        (filter #(possible? {:red 12 :green 13 :blue 14} %))
        (map #(get % :game))
        (apply +)

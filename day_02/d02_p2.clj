@@ -27,7 +27,8 @@
      (get-in game [:cubes :green] 1)))
 
 (when (seq *command-line-args*)
-  (->> (map make-game-info (line-seq (io/reader (first *command-line-args*))))
+  (->> (line-seq (io/reader (first *command-line-args*)))
+       (map make-game-info)
        (map power-cubes)
        (apply +)
        (println)))

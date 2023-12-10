@@ -30,7 +30,8 @@
     (long (math/pow 2 (dec n)))))
 
 (when (seq *command-line-args*)
-  (->> (map make-card-info (line-seq (io/reader (first *command-line-args*))))
+  (->> (line-seq (io/reader (first *command-line-args*)))
+       (map make-card-info)
        (map #(calc-point (get % :cnt)))
        (apply +)
        (println)))
