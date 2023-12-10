@@ -31,7 +31,7 @@
   ;; 6: Five of a Kind [5]
   '([1 1 1 1 1] [2 1 1 1] [2 2 1] [3 1 1] [3 2] [4 1] [5]))
 
-(defn- get-hand-aux
+(defn- get-rank
   "Return a hand information.
 
   example: 32T3K -> [1 [3 2 10 3 13]]"
@@ -43,8 +43,8 @@
                      (sort #(compare %2 %1)))]
     [(index-of hand-patterns pattern) (vec nums)]))
 
-(defn- get-hand
-  "Return a hand information (Joker-enabled version).
+(defn- get-rank-with-wildcard
+  "Return a hand information (wild card [Joker] enabled version).
 
   example:
     [without Joker] 32T3K -> [1 [3 2 10 3 13]]
@@ -54,16 +54,16 @@
   (let [card-set (set (str/split card #""))]
     (if (contains? card-set "J")
       (let [max-rank (->> (map #(str/replace card "J" %) card-set)
-                          (map get-hand-aux)
+                          (map get-rank)
                           (apply max-key first)
                           (first))]
         [max-rank (vec (map ch->num (seq card)))])
-      (get-hand-aux card))))
+      (get-rank card))))
 
 (defn- parse-line
   [line]
   (let [[card bid] (str/split line #" ")]
-    {:hand (get-hand card) :bid (parse-long bid) :card card}))
+    {:hand (get-rank-with-wildcard card) :bid (parse-long bid) :card card}))
 
 (when (seq *command-line-args*)
   (->> (map parse-line (line-seq (io/reader (first *command-line-args*))))

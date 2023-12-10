@@ -31,7 +31,7 @@
   ;; 6: Five of a Kind [5]
   '([1 1 1 1 1] [2 1 1 1] [2 2 1] [3 1 1] [3 2] [4 1] [5]))
 
-(defn- get-hand
+(defn- get-rank
   "Return a hand information.
 
   example: KTJJT -> [2 [13 10 11 11 10]]"
@@ -46,7 +46,7 @@
 (defn- parse-line
   [line]
   (let [[card bid] (str/split line #" ")]
-    {:hand (get-hand card) :bid (parse-long bid) :card card}))
+    {:hand (get-rank card) :bid (parse-long bid) :card card}))
 
 (when (seq *command-line-args*)
   (->> (map parse-line (line-seq (io/reader (first *command-line-args*))))
