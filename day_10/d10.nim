@@ -82,19 +82,19 @@ proc getNextPipe(x: int, y: int, dir: char): (int, int) =
 #
 #  1) From South to North -> status flag += 2
 #
-#       . (+1)           | (+1)
+#       | (+1)           | (+1)
 #  ==>  |             F--J
-#       . (+1)   (+1) |      etc.
+#       | (+1)   (+1) |      etc.
 #
 #  2) From North to South -> status flag -= 2
 #
-#       . (-1)   (-1) |
+#       | (-1)   (-1) |
 #  ==>  |             L--7
-#       . (-1)           | (-1)  etc.
+#       | (-1)           | (-1)  etc.
 #
 #  3) Others -> status flag isn't changed (plus-minus zero)
 #
-#       . (-1)  . (+1)
+#       | (-1)  | (+1)
 #  ==>  F-------7           etc.
 #
 #  If a tile isn't the loop-pipe and the status flag is non-zero,
