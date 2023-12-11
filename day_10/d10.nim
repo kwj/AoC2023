@@ -1,6 +1,5 @@
 # Day 10
 
-import std/options
 import std/strutils
 import std/tables
 
@@ -40,39 +39,34 @@ proc nextDir(pipe: char, dir: char): (char, char) =
                ('F', 'N'): ('S', 'E'), ('F', 'W'): ('E', 'S'),
                ('L', 'S'): ('N', 'E'), ('L', 'W'): ('E', 'N'),
                ('J', 'S'): ('N', 'W'), ('J', 'E'): ('W', 'N'),
-               ('7', 'N'): ('S', 'W'), ('7', 'E'): ('W', 'S'),
-               ('S', 'N'): ('S', '*'), ('S', 'E'): ('W', '*'),
-               ('S', 'S'): ('N', '*'), ('S', 'W'): ('E', '*')}.toTable
+               ('7', 'N'): ('S', 'W'), ('7', 'E'): ('W', 'S')}.toTable
 
   return tbl[(pipe, dir)]
 
 
 # Find a pipe connected to the start(S[sx, sy]) and return its direction.
-proc initDir(sx: int, sy: int, n_rows: int, n_cols: int, tbl: Table[(int, int), char]): Option[char] =
-  if tbl.getOrDefault((sx - 1, sy), '?') in {'7', '|', 'F'}:
-    return some('N')
-  if tbl.getOrDefault((sx, sy + 1), '?') in {'J', '-', '7'}:
-    return some('E')
-  if tbl.getOrDefault((sx + 1, sy), '?') in {'J', '|', 'L'}:
-    return some('S')
-  if tbl.getOrDefault((sx, sy - 1), '?') in {'L', '-', 'F'}:
-    return some('W')
+proc initDir(sx: int, sy: int, n_rows: int, n_cols: int, tbl: Table[(int, int), char]): (char, char) =
+  var dirs: seq[char]
 
-  return none(char)
+  if tbl.getOrDefault((sx - 1, sy), '?') in {'7', '|', 'F'}:
+    dirs.add('N')
+  if tbl.getOrDefault((sx, sy + 1), '?') in {'J', '-', '7'}:
+    dirs.add('E')
+  if tbl.getOrDefault((sx + 1, sy), '?') in {'J', '|', 'L'}:
+    dirs.add('S')
+  if tbl.getOrDefault((sx, sy - 1), '?') in {'L', '-', 'F'}:
+    dirs.add('W')
+
+  return (dirs[0], dirs[1])
 
 
 proc getNextPipe(x: int, y: int, dir: char): (int, int) =
   case dir
-  of 'N':
-    return (x - 1, y)
-  of 'E':
-    return (x, y + 1)
-  of 'S':
-    return (x + 1, y)
-  of 'W':
-    return (x, y - 1)
-  else:
-    assert(false, "Invalid direction")
+    of 'N': return (x - 1, y)
+    of 'E': return (x, y + 1)
+    of 'S': return (x + 1, y)
+    of 'W': return (x, y - 1)
+    else: assert(false, "Invalid direction")
 
 
 # Algorithm description for Part one:
@@ -111,22 +105,18 @@ when isMainModule:
   if paramCount() > 0:
     let data = readFile(paramStr(1))
     let ((n_rows, n_cols), (sx, sy), tbl) = parseData(data.strip())
-    let init_dir = initDir(sx, sy, n_rows, n_cols, tbl).get
+    var (from_dir, to_dir) = initDir(sx, sy, n_rows, n_cols, tbl)
 
-    var from_dir: char
-    var to_dir = init_dir
-    var (x, y) = (sx, sy)
     var loop_pipe = initTable[(int, int), (char, char)]()
-
+    loop_pipe[(sx, sy)] = (from_dir, to_dir)
+    var (x, y) = (sx, sy)
     while true:
       (x, y) = getNextPipe(x, y, to_dir)
-      (from_dir, to_dir) = nextDir(tbl[(x, y)], to_dir)
-
       if x != sx or y != sy:
+        (from_dir, to_dir) = nextDir(tbl[(x, y)], to_dir)
         loop_pipe[(x, y)] = (from_dir, to_dir)
         continue
       else:
-        loop_pipe[(x, y)] = (from_dir, init_dir)
         break
 
     echo("Part one: ", len(loop_pipe) div 2)
