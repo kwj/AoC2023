@@ -10,31 +10,31 @@ function d11_p2(fname::String = "input")
 end
 
 function d11(fname::String, factor::Int)
-    data = map(split.(readlines(fname), "")) do lst
-               broadcast(lst) do node
-                   if node == "." 0 else 1 end
+    data = map(split.(readlines(fname), "")) do line_lst
+               broadcast(line_lst) do elm
+                   if elm == "." 0 else 1 end
                end
            end
     m = hcat(data...)
-    r_empty = findall(r -> iszero(m[r, :]), 1:size(m, 1))
-    c_empty = findall(c -> iszero(m[:, c]), 1:size(m, 2))
-    galaxies = [[r, c] for r in 1:size(m, 1) for c in 1:size(m, 2) if m[r, c] == 1]
+    x_gaps = findall(x -> iszero(m[x, :]), 1:size(m, 1))
+    y_gaps = findall(y -> iszero(m[:, y]), 1:size(m, 2))
+    galaxies = [[x, y] for x in 1:size(m, 1) for y in 1:size(m, 2) if m[x, y] == 1]
 
     ans = 0
     for i = 1:(length(galaxies) - 1)
         for j = (i + 1):length(galaxies)
-            ans += distance(galaxies[i], galaxies[j], r_empty, c_empty, factor)
+            ans += distance(galaxies[i], galaxies[j], x_gaps, y_gaps, factor)
         end
     end
 
     ans
 end
 
-function distance(g1::Vector{Int}, g2::Vector{Int}, r_empty::Vector{Int}, c_empty::Vector{Int}, factor::Int)
-    r_count = count(i -> i in range(min(g1[1], g2[1]), max(g1[1], g2[1])), r_empty)
-    c_count = count(i -> i in range(min(g1[2], g2[2]), max(g1[2], g2[2])), c_empty)
+function distance(g1::Vector{Int}, g2::Vector{Int}, x_gaps::Vector{Int}, y_gaps::Vector{Int}, factor::Int)
+    x_count = count(i -> i in range(min(g1[1], g2[1]), max(g1[1], g2[1])), x_gaps)
+    y_count = count(i -> i in range(min(g1[2], g2[2]), max(g1[2], g2[2])), y_gaps)
 
-    sum(map(abs, g1 - g2)) + (r_count + c_count) * (factor - 1)
+    sum(abs.(g1 - g2)) + (x_count + y_count) * (factor - 1)
 end
 
 end #module
