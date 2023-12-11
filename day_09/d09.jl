@@ -7,12 +7,12 @@ end
 
 function d09_p1(fname::String = "input")
     data = map(line -> map(x -> parse(Int, x), split(line, " ")), readlines(fname))
-    sum(map(lst -> calc_pred(lst), data))
+    sum(calc_pred.(data))
 end
 
 function d09_p2(fname::String = "input")
     data = map(line -> map(x -> parse(Int, x), reverse(split(line, " "))), readlines(fname))
-    sum(map(lst -> calc_pred(lst), data))
+    sum(calc_pred.(data))
 end
 
 end #module
