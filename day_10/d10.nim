@@ -113,6 +113,7 @@ when isMainModule:
 
       if x != sx or y != sy:
         loop_pipe[(x, y)] = (from_dir, to_dir)
+        continue
       else:
         loop_pipe[(x, y)] = (from_dir, init_dir)
         break
