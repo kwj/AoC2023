@@ -29,7 +29,7 @@ proc parseData(data: string): ((int, int), (int, int), Table[(int, int), char]) 
 #
 # example:
 #   +-+
-#   |F|<--(W)--
+#   |F|<--(to West)--
 #   +-+
 #
 #   retrun: ('E', 'S')  // from 'East' to 'South'
@@ -47,6 +47,7 @@ proc nextDir(pipe: char, dir: char): (char, char) =
   return tbl[(pipe, dir)]
 
 
+# Find a pipe connected to the start(S[sx, sy]) and return its direction.
 proc initDir(sx: int, sy: int, n_rows: int, n_cols: int, tbl: Table[(int, int), char]): Option[char] =
   if tbl.getOrDefault((sx - 1, sy), '?') in {'7', '|', 'F'}:
     return some('N')
@@ -75,29 +76,34 @@ proc getNextPipe(x: int, y: int, dir: char): (int, int) =
 
 
 # Algorithm description for Part one:
+#
 #  1) Find the starting point
 #  2) Follow pipes with recording the direction of travel for each pipe.
 #  3) Continue until it returns to the starting point
 #
 # Algorithm description for Part two:
-#  1) From South to North -> flag += 2
+#
+#  Based on the information recorded in Part one, find out if each tile
+#  in rows is inside or outside the loop. The decision logic is as follows.
+#
+#  1) From South to North -> status flag += 2
 #
 #       . (+1)           | (+1)
 #  ==>  |             F--J
 #       . (+1)   (+1) |      etc.
 #
-#  2) From North to South -> flag -= 2
+#  2) From North to South -> status flag -= 2
 #
 #       . (-1)   (-1) |
 #  ==>  |             L--7
 #       . (-1)           | (-1)  etc.
 #
-#  3) Others -> flag isn't changed (plus-minus zero)
+#  3) Others -> status flag isn't changed (plus-minus zero)
 #
 #       . (-1)  . (+1)
 #  ==>  F-------7           etc.
 #
-#  If a tile isn't the loop-pipe and the flag is non-zero,
+#  If a tile isn't the loop-pipe and the status flag is non-zero,
 #  the tile is inside the loop.
 #
 when isMainModule:
