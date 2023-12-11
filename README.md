@@ -13,6 +13,7 @@ URL: https://adventofcode.com/2023
 * [Day 7: Camel Cards](./day_07/)
 * [Day 8: Haunted Wasteland](./day_08/)
 * [Day 9: Mirage Maintenance](./day_09/)
+* [Day 10: Pipe Maze](./day_10/)
 
 ## Note
 
