@@ -23,14 +23,14 @@ function d11(fname::String, factor::Int)
     ans = 0
     for i = 1:(length(galaxies) - 1)
         for j = (i + 1):length(galaxies)
-            ans += distance(galaxies[i], galaxies[j], x_gaps, y_gaps, factor)
+            ans += manhattan_distance(galaxies[i], galaxies[j], x_gaps, y_gaps, factor)
         end
     end
 
     ans
 end
 
-function distance(g1::Vector{Int}, g2::Vector{Int}, x_gaps::Vector{Int}, y_gaps::Vector{Int}, factor::Int)
+function manhattan_distance(g1::Vector{Int}, g2::Vector{Int}, x_gaps::Vector{Int}, y_gaps::Vector{Int}, factor::Int)
     x_count = count(i -> i in range(min(g1[1], g2[1]), max(g1[1], g2[1])), x_gaps)
     y_count = count(i -> i in range(min(g1[2], g2[2]), max(g1[2], g2[2])), y_gaps)
 
