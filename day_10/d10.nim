@@ -74,7 +74,12 @@ proc getNextPipe(x: int, y: int, dir: char): (int, int) =
     assert(false, "Invalid direction")
 
 
-# Algorithm for Part two:
+# Algorithm description for Part one:
+#  1) Find the starting point
+#  2) Follow pipes with recording the direction of travel for each pipe.
+#  3) Continue until it returns to the starting point
+#
+# Algorithm description for Part two:
 #  1) From South to North -> flag += 2
 #
 #       . (+1)           | (+1)
