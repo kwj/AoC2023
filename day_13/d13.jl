@@ -61,8 +61,7 @@ function find_horiz_reflections(m, smudge)
         end
 
         width = min(n_rows - idx, idx)
-        gap = sum(abs.(m[idx:-1:(idx - width + 1), :] - m[(idx + 1):(idx + width), :]))
-        if gap <= smudge
+        if sum(abs.(m[idx:-1:(idx - width + 1), :] - m[(idx + 1):(idx + width), :])) <= smudge
             push!(res, idx)
         end
     end
