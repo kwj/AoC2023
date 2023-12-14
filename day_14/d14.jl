@@ -89,23 +89,24 @@ function d14_p2(fname::String = "input")
     limit = 1_000_000_000
     m = read_matrix(fname)
     tbl::Dict{Tuple{UInt, Int}, Int} = Dict()
-    weight_lst = []
-    ans = 0
+    load_lst = []
+    load = 0
 
     for cnt in 1:limit
         m = do_cycle(m)
         h = hash(m)
-        w = eval_load(m)
-        key = (h, w)
+        load = eval_load(m)
+        key = (h, load)
+
         if haskey(tbl, key)
-            ans = weight_lst[tbl[key] + ((limit - cnt) % (cnt - tbl[key]))]
+            load = load_lst[tbl[key] + ((limit - cnt) % (cnt - tbl[key]))]
             break
         else
             tbl[key] = cnt
-            push!(weight_lst, w)
+            push!(load_lst, load)
         end
     end
-    ans
+    load
 end
 
 end #module
