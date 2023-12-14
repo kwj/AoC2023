@@ -26,7 +26,13 @@ end
 
 
 #=
-Each ghost has own state.
+We assume that ghost checks a spring and moves to the next spring. There is one ghost
+at start position. When on a spring of unknown status, ghost divides into `operational`
+and `damaged` spring condition.
+
+Each state is a key and the number of ghosts corresponding to the state is a value.
+
+ State
   [pos]
     * a position in the row
        s = "..??#???##??#??"
@@ -45,6 +51,23 @@ Each ghost has own state.
        must be `operational` or `unknown`.
        This flag is set only immediately after found a specified consecutive
        damaged springs.
+
+ Example:
+   Data
+     .???.?.#. 2,1,1
+
+   State at the beginning of each cycle
+      1. Dict([1, 1, 0, 0] => 1)
+      2. Dict([2, 1, 0, 0] => 1)
+      3. Dict([3, 1, 0, 0] => 1, [3, 1, 1, 0] => 1)
+      4. Dict([4, 1, 0, 0] => 1, [4, 2, 0, 1] => 1, [4, 1, 1, 0] => 1)
+      5. Dict([5, 1, 0, 0] => 1, [5, 2, 0, 1] => 1, [5, 1, 1, 0] => 1, [5, 2, 0, 0] => 1)
+      6. Dict([6, 2, 0, 0] => 2, [6, 1, 0, 0] => 1)
+      7. Dict([7, 1, 0, 0] => 1, [7, 3, 0, 1] => 2, [7, 2, 0, 0] => 2, [7, 1, 1, 0] => 1)
+      8. Dict([8, 2, 0, 0] => 2, [8, 3, 0, 0] => 2, [8, 1, 0, 0] => 1)
+      9. Dict([9, 4, 0, 1] => 2, [9, 3, 0, 1] => 2, [9, 1, 1, 0] => 1)
+     10. Dict([10, 3, 0, 0] => 2, [10, 4, 0, 0] => 2)
+                                  ^^^^^^^^^^^^^^^^^^ This state meets the goal condition.
 =#
 
 function solve(s::AbstractString, grp::Vector{Int64})
