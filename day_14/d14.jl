@@ -94,9 +94,8 @@ function d14_p2(fname::String = "input")
 
     for cnt in 1:limit
         m = do_cycle(m)
-        h = hash(m)
         load = eval_load(m)
-        key = (h, load)
+        key = (hash(m), load)
 
         if haskey(tbl, key)
             load = load_lst[tbl[key] + ((limit - cnt) % (cnt - tbl[key]))]
