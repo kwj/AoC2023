@@ -17,6 +17,7 @@ URL: https://adventofcode.com/2023
 * [Day 11: Cosmic Expansion](./day_11/)
 * [Day 12: Hot Springs](./day_12/)
 * [Day 13: Point of Incidence](./day_13/)
+* [Day 14: Parabolic Reflector Dish](./day_14/)
 
 ## Note
 
