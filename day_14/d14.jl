@@ -83,7 +83,7 @@ julia> for i in 1:100
 51, 16
 =#
 
-@inline do_cycle(m) = rotr90(tilt(rotr90(tilt(rotr90(tilt(rotr90(tilt(m))))))))
+@inline do_cycle(m) = tilt(m) |> rotr90 |> tilt |> rotr90 |> tilt |> rotr90 |> tilt |> rotr90
 
 function d14_p2(fname::String = "input")
     limit = 1_000_000_000
