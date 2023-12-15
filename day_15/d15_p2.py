@@ -56,6 +56,8 @@ if __name__ == '__main__':
             op_sign(tbl, ops[1:])
         elif ops[0] == '-':
             op_dash(tbl, ops[1:])
+        else:
+            print('[Warning] invalid operation found: {} - Ignored'.format(ops))
 
     ans = 0
     for k, lst in tbl.items():
