@@ -37,8 +37,8 @@ def op_dash(tbl, ops):
     box, label = ops
     if box in tbl:
         tbl[box] = [tpl for tpl in tbl[box] if tpl[0] != label]
-    if box in tbl and len(tbl[box]) == 0:
-        del tbl[box]
+        if len(tbl[box]) == 0:
+            del tbl[box]
 
 
 if __name__ == '__main__':
