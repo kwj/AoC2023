@@ -12,6 +12,13 @@ def aoc_hash(s):
     return reduce(lambda acc, x: (acc + ord(x)) * 17 % 256, s, 0)
 
 
+# Make the operation data from a string.
+#  [op_cmd, box_number, label, focal_length]  (when op_cmd == '=')
+#  [op_cmd, box_number, label]  (when op_cmd == '-')
+#
+# Example:
+#   rn=1 -> ['=', aoc_hash('rn'), 'rn', 1]
+#   qp-  -> ['-', aoc_hash('qp'), 'qp']
 def parse_line(s):
     m = re.match(r'(\w+)(\W)(.*)', s)
     if m.group(3) == '':
@@ -20,7 +27,7 @@ def parse_line(s):
         return [m.group(2), aoc_hash(m.group(1)), m.group(1), int(m.group(3))]
 
 
-def op_sign(tbl, ops):
+def op_eqsign(tbl, ops):
     box, label, flen = ops
     if box not in tbl:
         tbl[box] = [(label, flen)]
@@ -53,7 +60,7 @@ if __name__ == '__main__':
     tbl = {}
     for ops in lines:
         if ops[0] == '=':
-            op_sign(tbl, ops[1:])
+            op_eqsign(tbl, ops[1:])
         elif ops[0] == '-':
             op_dash(tbl, ops[1:])
         else:
