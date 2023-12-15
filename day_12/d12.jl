@@ -81,6 +81,7 @@ function solve(s::AbstractString, grp::Vector{Int64})
         for ((pos, grp_idx, consec_num, not_broken), v) in crnt_st
             if pos > s_len
                 if grp_idx > grp_len
+                    # Count only those that find all damaged spring groups.
                     ans += v
                 end
             elseif (s[pos] == '#' || s[pos] == '?') && grp_idx <= grp_len && not_broken == 0
@@ -94,8 +95,12 @@ function solve(s::AbstractString, grp::Vector{Int64})
                 # The following is the process for damaged spring
                 consec_num += 1
                 if consec_num == grp[grp_idx]
+                    # We've found the specified number of damaged consecutive springs,
+                    # so increase `grp_idx` by one. And set `not_broken` is 1 which
+                    # means the next spring must be operational.
                     next_key = [pos + 1, grp_idx + 1, 0, 1]
                 else
+                    # Damaged springs continue.
                     next_key = [pos + 1, grp_idx, consec_num, 0]
                 end
                 next_st[next_key] = get(next_st, next_key, 0) + v
