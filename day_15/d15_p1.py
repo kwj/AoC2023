@@ -18,6 +18,4 @@ if __name__ == '__main__':
     )
     args = parser.parse_args()
     with args.infile as f:
-        lines = [x for x in f.read().strip().split(',')]
-
-    print(reduce(lambda acc, x: acc + aoc_hash(x), lines, 0))
+        print(sum(aoc_hash(x) for x in f.read().strip().split(',')))
