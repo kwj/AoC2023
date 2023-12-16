@@ -131,16 +131,18 @@ fn solve(cmap: &Cmap, init_beam: Beam) -> i64 {
             match obj {
                 '-' => {
                     if beam.dx != 0 {
+                        // If the beam encounters the flat side of a splitter,
+                        // the beam is split into two.
+                        (beam.dx, beam.dy) = (0, 1);
                         beams.push(Beam::new((beam.x, beam.y, 0, !0)));
-                        beam.dx = 0;
-                        beam.dy = 1;
                     }
                 }
                 '|' => {
                     if beam.dy != 0 {
+                        // If the beam encounters the flat side of a splitter,
+                        // the beam is split into two.
+                        (beam.dx, beam.dy) = (1, 0);
                         beams.push(Beam::new((beam.x, beam.y, !0, 0)));
-                        beam.dx = 1;
-                        beam.dy = 0;
                     }
                 }
                 '/' => beam.bounce(obj),
@@ -180,8 +182,7 @@ fn main() {
     }
     let max_value = tpls
         .iter()
-        .map(|&tpl| Beam::new(tpl))
-        .map(|beam| solve(&contr, beam))
+        .map(|&tpl| solve(&contr, Beam::new(tpl)))
         .max()
         .unwrap();
     println!("Part two: {}", max_value);
