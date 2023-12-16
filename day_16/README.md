@@ -6,11 +6,13 @@
 
 ## How to use
 
-### Compile the source file
+### Compile the source file with `-O` (opt-level=2)
 
 ```console
-$ rustc d16.rs
+$ rustc -O d16.rs
 ```
+
+Note: It is five times slower without optimization on my machine.
 
 ### Run solver with the name of the puzzle data file as an argument
 
