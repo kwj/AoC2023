@@ -59,7 +59,7 @@ function d14_p1(fname::String = "input")
 end
 
 #=
-I met a hash collision!  I therefore use a hash value and a weight of
+I met a hash collision!  I therefore use a hash value and a load of
 platform as dictionary's key.
 
 > println("cnt: ", cnt, ", key: ", key)
