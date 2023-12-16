@@ -1,4 +1,4 @@
-// Day 16: Part one
+// Day 16
 
 use std::collections::HashSet;
 use std::env;
