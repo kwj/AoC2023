@@ -1,4 +1,4 @@
-# Solutions to Day 10
+# Day 10
 
 ## Requirement
 

@@ -1,4 +1,4 @@
-# Solutions to Day 13
+# Day 13
 
 ## Requirement
 

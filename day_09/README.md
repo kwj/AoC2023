@@ -1,4 +1,4 @@
-# Solutions to Day 9
+# Day 9
 
 ## Requirement
 

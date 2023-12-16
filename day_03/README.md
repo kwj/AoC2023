@@ -1,4 +1,4 @@
-# Solutions to Day 3
+# Day 3
 
 ## Requirement
 

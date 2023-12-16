@@ -1,4 +1,4 @@
-# Solutions to Day 6
+# Day 6
 
 ## Requirement
 

@@ -1,4 +1,4 @@
-# Solutions to Day 5
+# Day 5
 
 ## Requirement
 

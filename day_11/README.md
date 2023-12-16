@@ -1,4 +1,4 @@
-# Solutions to Day 11
+# Day 11
 
 ## Requirement
 

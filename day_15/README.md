@@ -1,4 +1,4 @@
-# Solutions to Day 15
+# Day 15
 
 ## Requirement
 

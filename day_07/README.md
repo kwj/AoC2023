@@ -1,4 +1,4 @@
-# Solutions to Day 7
+# Day 7
 
 ## Requirement
 

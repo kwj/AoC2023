@@ -1,4 +1,4 @@
-# Solutions to Day 8
+# Day 8
 
 ## Requirement
 

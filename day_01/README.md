@@ -1,4 +1,4 @@
-# Solutions to Day 1
+# Day 1
 
 ## Requirement
 
