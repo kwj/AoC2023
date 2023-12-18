@@ -20,11 +20,11 @@ proc makeGrid(data: string): Grid =
 
 
 proc isInside(grid: Grid, node: Node): bool =
-  return node.id.x <= uint(high(grid)) and node.id.y <= uint(high(grid[0]))
+  return node.id.x <= uint(high(grid)) and node.id.y <= uint(high(grid[node.id.x]))
 
 
 proc isGoal(grid: Grid, node: Node): bool =
-  return node.id.x == uint(high(grid)) and node.id.y == uint(high(grid[0]))
+  return node.id.x == uint(high(grid)) and node.id.y == uint(high(grid[high(grid)]))
 
 
 proc solve(grid: Grid, minSteps: uint, maxSteps: uint): uint =
