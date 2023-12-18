@@ -47,6 +47,8 @@ proc solve(grid: Grid, minSteps: uint, maxSteps: uint): uint =
       return node.cost
 
     for (dx, dy) in delta[node.id.dir]:
+      # I don't know why this is working. Deep copy or Copy-on-write?
+      # I have not yet found documentation of this behavior.
       var next_node = node
 
       # Change of direction of movement
