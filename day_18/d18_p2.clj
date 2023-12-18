@@ -42,7 +42,7 @@
                          (* (nth (first %) 1) (nth (second %) 0))))
                 (apply +)
                 (abs))]
-    (inc (quot (+ A2 (:steps m)) 2))))
+    (inc (quot (+ A2 (:steps m)) 2)))) ; (A2 / 2) + (steps / 2 + 1)
 
 (when (seq *command-line-args*)
   (->> (line-seq (io/reader (first *command-line-args*)))
