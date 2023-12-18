@@ -7,24 +7,24 @@ import std/tables
 
 type
   Grid = seq[seq[uint]]
-  Node = object
+  Crucible = object
     id: tuple[x: uint, y: uint, dir: uint]
     cost: uint
 
 
-proc `<`(a, b: Node): bool = a.cost < b.cost
+proc `<`(a, b: Crucible): bool = a.cost < b.cost
 
 
 proc makeGrid(data: string): Grid =
   return splitLines(data).mapIt(it.mapIt(parseUInt($it)))
 
 
-proc isInside(grid: Grid, node: Node): bool =
-  return node.id.x <= uint(high(grid)) and node.id.y <= uint(high(grid[node.id.x]))
+proc isInside(grid: Grid, c: Crucible): bool =
+  return c.id.x <= uint(high(grid)) and c.id.y <= uint(high(grid[c.id.x]))
 
 
-proc isGoal(grid: Grid, node: Node): bool =
-  return node.id.x == uint(high(grid)) and node.id.y == uint(high(grid[high(grid)]))
+proc isGoal(grid: Grid, c: Crucible): bool =
+  return c.id.x == uint(high(grid)) and c.id.y == uint(high(grid[high(grid)]))
 
 
 proc solve(grid: Grid, minSteps: uint, maxSteps: uint): uint =
@@ -33,45 +33,45 @@ proc solve(grid: Grid, minSteps: uint, maxSteps: uint): uint =
   #   delta[1]: vertical movement
   const delta: array[2, array[2, (uint, uint)]] = [[(0, 1), (0, high(uint))], [(1, 0), (high(uint), 0)]]
 
-  var hq = initHeapQueue[Node]()
-  hq.push(Node(id: (0, 0, 0), cost: 0))  # Horizontal
-  hq.push(Node(id: (0, 0, 1), cost: 0))  # Vertical
+  var hq = initHeapQueue[Crucible]()
+  hq.push(Crucible(id: (0, 0, 0), cost: 0))  # Horizontal
+  hq.push(Crucible(id: (0, 0, 1), cost: 0))  # Vertical
 
   var costs = initTable[(uint, uint, uint), uint]()
 
   while hq.len > 0:
-    var node = hq.pop()
+    var crucible = hq.pop()
 
-    # If a minimum heat loss node is the bottom-right block, that is the goal.
-    if isGoal(grid, node):
-      return node.cost
+    # If there is a minimum cost (heat loss) crucible at the bottom-right block, that is the goal.
+    if isGoal(grid, crucible):
+      return crucible.cost
 
-    for (dx, dy) in delta[node.id.dir]:
+    for (dx, dy) in delta[crucible.id.dir]:
       # I don't know why this is working. Deep copy or Copy-on-write?
       # I have not yet found documentation of this behavior.
-      var next_node = node
+      var next_c = crucible
 
-      # Change of direction of movement
+      # Change direction of movement
       # `0 xor 1` -> 1, `1 xor 1` -> 0
-      next_node.id.dir = next_node.id.dir xor 1
+      next_c.id.dir = next_c.id.dir xor 1
 
       for step in 1..max_steps:
-        next_node.id.x += dx
-        next_node.id.y += dy
-        if isInside(grid, next_node) == false:
+        next_c.id.x += dx
+        next_c.id.y += dy
+        if isInside(grid, next_c) == false:
           break
-        next_node.cost += grid[next_node.id.x][next_node.id.y]
+        next_c.cost += grid[next_c.id.x][next_c.id.y]
 
         if step < minSteps:
           continue
 
         var crnt_cost = high(uint)
-        if costs.hasKey(next_node.id):
-          crnt_cost = costs[next_node.id]
+        if costs.hasKey(next_c.id):
+          crnt_cost = costs[next_c.id]
 
-        if next_node.cost < crnt_cost:
-          costs[next_node.id] = next_node.cost
-          hq.push(next_node)
+        if next_c.cost < crnt_cost:
+          costs[next_c.id] = next_c.cost
+          hq.push(next_c)
 
 
 when isMainModule:
