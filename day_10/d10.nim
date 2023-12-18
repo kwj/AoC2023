@@ -45,7 +45,7 @@ proc nextDir(pipe: char, dir: char): (char, char) =
 
 
 # Find a pipe connected to the start(S[sx, sy]) and return its direction.
-proc initDir(sx: int, sy: int, n_rows: int, n_cols: int, tbl: Table[(int, int), char]): (char, char) =
+proc initDir(sx: int, sy: int, tbl: Table[(int, int), char]): (char, char) =
   var dirs: seq[char]
 
   if tbl.getOrDefault((sx - 1, sy), '?') in {'7', '|', 'F'}:
@@ -105,7 +105,7 @@ when isMainModule:
   if paramCount() > 0:
     let data = readFile(paramStr(1))
     let ((n_rows, n_cols), (sx, sy), tbl) = parseData(data.strip())
-    var (from_dir, to_dir) = initDir(sx, sy, n_rows, n_cols, tbl)
+    var (from_dir, to_dir) = initDir(sx, sy, tbl)
 
     var loop_pipe = initTable[(int, int), (char, char)]()
     loop_pipe[(sx, sy)] = (from_dir, to_dir)
