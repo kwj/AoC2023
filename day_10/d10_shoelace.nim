@@ -1,8 +1,8 @@
 # Day 10
 
 #[
-  I learned about the Shoelace formula on Day 18, I therefore
-  created an another solution.
+  I learned about the Shoelace formula on Day 18,
+  So, I wrote another program.
 
   Shoelace formula and Pick's theorem
     https://en.wikipedia.org/wiki/Shoelace_formula
