@@ -1,0 +1,19 @@
+# Day 18
+
+## Requirement
+
+* [Babashka](https://babashka.org/) (confirmed to work with Babashka v1.3.186)
+
+## How to use
+
+*Part one*
+
+```console
+bb d18_p1.clj input
+```
+
+*Part two*
+
+```console
+bb d18_p2.clj input
+```
