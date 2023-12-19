@@ -28,7 +28,7 @@ proc isGoal(grid: Grid, c: Crucible): bool =
 
 
 proc solve(grid: Grid, minSteps: uint, maxSteps: uint): uint =
-  # high(uint) means `-1`.
+  # high(uint) means `-1` in the `delta` array..
   #   delta[0]: horizontal movement
   #   delta[1]: vertical movement
   const delta: array[2, array[2, (uint, uint)]] = [[(0, 1), (0, high(uint))], [(1, 0), (high(uint), 0)]]
@@ -65,6 +65,7 @@ proc solve(grid: Grid, minSteps: uint, maxSteps: uint): uint =
         if step < minSteps:
           continue
 
+        # This `high(uint)` means that the total heat loss of reaching a block is unknown.
         var crnt_cost = high(uint)
         if costs.hasKey(next_c.id):
           crnt_cost = costs[next_c.id]
