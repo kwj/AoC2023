@@ -22,6 +22,7 @@ URL: https://adventofcode.com/2023
 * [Day 16: The Floor Will Be Lava](./day_16/)
 * [Day 17: Clumsy Crucible](./day_17/)
 * [Day 18: Lavaduct Lagoon](./day_18/)
+* [Day 19: Aplenty](./day_19/)
 
 ## Note
 
