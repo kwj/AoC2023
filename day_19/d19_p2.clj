@@ -5,14 +5,24 @@
 (require '[clojure.java.io :as io])
 (require '[clojure.string :as str])
 
+;;; Example
+;;;   [in] "a<2006:qkq"
+;;;   [out] {:a "<" 2006 :pkg}
 (defn- make-workflow-aux
+  "Make a condition map from a string."
   [s]
   (let [category (subs s 0 1)
         op (subs s 1 2)
         [n next-tag] (str/split (subs s 2) #":")]
     [(keyword category) op (parse-long n) (keyword next-tag)]))
 
+;;; Example
+;;;   [in]
+;;;     rfg{s<537:gd,x>2440:R,A}
+;;;   [out]
+;;;   {:rfg {:workflow ({:s "<" 537 :gd} {:x ">" 2440 :R}) :default :A}}
 (defn- make-workflow
+  "Make a workflow table."
   [data]
   (loop [lines (str/split-lines data)
          tbl {}]
@@ -28,7 +38,18 @@
                       {:workflow (map make-workflow-aux (drop-last flows)), :default (keyword default)})))
       tbl)))
 
+;;; user=> (next-range-aux "<" 2006 {:start 1, :end 4000})
+;;; [{:start 1, :end 2005} {:start 2006, :end 4000}]
+;;; user=> (next-range-aux "<" 2006 {:start 3000, :end 4000})
+;;; [nil {:start 3000, :end 4000}]
+;;; user=> (next-range-aux "<" 2006 {:start 1000, :end 2000})
+;;; [{:start 1000, :end 2000} nil]
 (defn- next-ranges-aux
+  "Divide a range according to a condition and return a vector.
+
+   The first element of the vector is the range which meets the conditin,
+   The second element is the range which doesn't meet the condition.
+   If there is not a range, the element must be `nil`."
   [op n r]
   (let [low (:start r)
         high (:end r)]
@@ -44,7 +65,7 @@
       (assert false "unknown `op`"))))
 
 ;;; Example
-;;;   [in]narguments:
+;;;   [in]
 ;;;     m - {:workflow ([:a "<" 2006 :qkq] [:m ">" 2090 :A]), :default :rfg}
 ;;;     parts - {:x {:start 1 :end 4000}, :m {:start 1 :end 4000}, :a {:start 1 :end 4000}, :s {:start 1 :end 4000}}
 ;;;   [out]
@@ -93,5 +114,7 @@
           (case (:tag state)
             :R (recur (pop q) ans)
             :A (recur (pop q) (+ ans (number-of-accepted (:parts state))))
-            (let [p-ranges (next-ranges ((:tag state) tbl) (:parts state))]
-              (recur (apply conj (pop q) p-ranges) ans))))))))
+            (recur (apply conj
+                          (pop q)
+                          (next-ranges ((:tag state) tbl) (:parts state)))
+                   ans)))))))

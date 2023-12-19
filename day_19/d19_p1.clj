@@ -5,14 +5,24 @@
 (require '[clojure.java.io :as io])
 (require '[clojure.string :as str])
 
+;;; Example
+;;;   [in] "a<2006:qkq"
+;;;   [out] {:a "<" 2006 :pkg}
 (defn- make-workflow-aux
+  "Make a condition map from a string."
   [s]
   (let [category (subs s 0 1)
         op (subs s 1 2)
         [n next-tag] (str/split (subs s 2) #":")]
     [(keyword category) op (parse-long n) (keyword next-tag)]))
 
+;;; Example
+;;;   [in]
+;;;     rfg{s<537:gd,x>2440:R,A}
+;;;   [out]
+;;;     {:rfg {:workflow ({:s "<" 537 :gd} {:x ">" 2440 :R}) :default :A}}
 (defn- make-workflow
+  "Make a workflow table."
   [data]
   (loop [lines (str/split-lines data)
          tbl {}]
@@ -28,7 +38,11 @@
                       {:workflow (map make-workflow-aux (drop-last flows)), :default (keyword default)})))
       tbl)))
 
+;;; Example
+;;;   [in] "{x=787,m=2655,a=1222,s=2876}"
+;;;   [out] {:x 787, :m 2655, :a 1222, :s 2876}
 (defn- make-parts
+  "Make a part map."
   [data]
   (loop [lines (str/split-lines data)
          v []]
