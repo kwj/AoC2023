@@ -28,7 +28,9 @@
       {:steps acc :points vs})))
 
 ;;; Shoelace formula
-;;; https://en.wikipedia.org/wiki/Shoelace_formula
+;;;   https://en.wikipedia.org/wiki/Shoelace_formula
+;;; Pick's theorem
+;;;   https://en.wikipedia.org/wiki/Pick%27s_theorem
 (defn- solve
   [m]
   (let [A2 (->> (partition 2 1 (:points m))
@@ -36,7 +38,8 @@
                          (* (nth (first %) 1) (nth (second %) 0))))
                 (apply +)
                 (abs))]
-    (inc (quot (+ A2 (:steps m)) 2)))) ; (A2 / 2) + (steps / 2 + 1)
+    ;; A = i + b/2 - 1 --> i + b = A + b/2 + 1 = (2A + b) / 2 + 1
+    (inc (quot (+ A2 (:steps m)) 2))))
 
 (when (seq *command-line-args*)
   (->> (line-seq (io/reader (first *command-line-args*)))
