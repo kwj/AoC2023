@@ -7,9 +7,9 @@
 
 ;;; Example
 ;;;   [in] "a<2006:qkq"
-;;;   [out] {:a "<" 2006 :pkg}
+;;;   [out] [:a "<" 2006 :pkg]
 (defn- make-workflow-aux
-  "Make a condition map from a string."
+  "Make a condition vector from a string."
   [s]
   (let [category (subs s 0 1)
         op (subs s 1 2)
@@ -20,7 +20,7 @@
 ;;;   [in]
 ;;;     rfg{s<537:gd,x>2440:R,A}
 ;;;   [out]
-;;;     {:rfg {:workflow ({:s "<" 537 :gd} {:x ">" 2440 :R}) :default :A}}
+;;;     {:rfg {:workflow ([:s "<" 537 :gd] [:x ">" 2440 :R]) :default :A}}
 (defn- make-workflow
   "Make a workflow table."
   [data]
