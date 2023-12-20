@@ -68,11 +68,11 @@
 
 (defn- accept?
   [tbl part]
-  (loop [state :in]
-    (case state
+  (loop [tag :in]
+    (case tag
       :A true
       :R false
-      (recur (next-tag (state tbl) part)))))
+      (recur (next-tag (tag tbl) part)))))
 
 (when (seq *command-line-args*)
   (let [[s1 s2] (str/split (slurp (first *command-line-args*)) #"\n\n")
