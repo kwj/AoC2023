@@ -80,6 +80,6 @@
         parts (make-parts s2)]
     (->> (filter #(accept? tbl %) parts)
          (map vals)
-         (map #(apply + %))
+         (flatten)
          (apply +)
          (println))))
