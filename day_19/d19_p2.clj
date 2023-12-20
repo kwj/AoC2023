@@ -99,8 +99,7 @@
        (apply *)))
 
 (when (seq *command-line-args*)
-  (let [[s1 _] (str/split (slurp (first *command-line-args*)) #"\n\n")
-        tbl (make-workflow s1)]
+  (let [tbl (make-workflow (first (str/split (slurp (first *command-line-args*)) #"\n\n")))]
     (loop [q (conj (clojure.lang.PersistentQueue/EMPTY)
                    {:tag :in,
                     :parts {:x {:start 1 :end 4000},
