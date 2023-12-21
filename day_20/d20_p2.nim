@@ -1,14 +1,16 @@
 # Day 20; Part two
 
-import std/assertions
-import std/deques
-import std/math
-import std/options
-import std/sequtils
-import std/sets
-import std/strutils
-import std/tables
+#[
+  [Caution]
+    This program assumes the following:
+      * There is only one input line to the `rx` module, it must come from a conjunction module.
+      * All high-pulse input of each input line to the above conjunction module are cyclically,
+        and each period starts at the first button pushing.
+]#
 
+import std/[assertions, deques, math, options, sequtils, sets, strutils, tables]
+
+# [pulse]
 const Low = 0
 const High = 1
 
@@ -16,29 +18,26 @@ type
   Pulse = object
     src: string
     dest: string
-    level: int
+    level: int  # High/Low
 
+# [modules]
 type
   Module = ref object of RootObj
     dest: seq[string]
+  FlipFlop = ref object of Module
+    level: int
+  Conj = ref object of Module
+    src: Table[string, int]
 
 method input(self: Module, pulse: Pulse): seq[Pulse] {.base.} =
   for d in self.dest:
     result.add(Pulse(src: pulse.dest, dest: d, level: Low))
 
-type
-  FlipFlop = ref object of Module
-    level: int
-
 method input(self: FlipFlop, pulse: Pulse): seq[Pulse] =
   if pulse.level == Low:
-    self.level = self.level xor 1
+    self.level = self.level xor 1  # Low <-> High
     for d in self.dest:
       result.add(Pulse(src: pulse.dest, dest: d, level: self.level))
-
-type
-  Conj = ref object of Module
-    src: Table[string, int]
 
 method input(self: Conj, pulse: Pulse): seq[Pulse] =
   self.src[pulse.src] = pulse.level
@@ -48,11 +47,12 @@ method input(self: Conj, pulse: Pulse): seq[Pulse] =
   for d in self.dest:
     result.add(Pulse(src: pulse.dest, dest: d, level: level))
 
+# [conjunction checker]
 type
-  RxChecker = ref object
+  ConjChecker = ref object
     modules: Table[string, seq[int]]
 
-proc hit(self: RxChecker, name: string, cnt: int): Option[seq[int]] =
+proc hit(self: ConjChecker, name: string, cnt: int): Option[seq[int]] =
   self.modules[name].add(cnt)
   let vals = toSeq(self.modules.values)
   if all(vals, proc(x: seq[int]): bool = x.len >= 2):
@@ -68,8 +68,8 @@ proc hit(self: RxChecker, name: string, cnt: int): Option[seq[int]] =
 
 proc parseData(data: string): (Table[string, Module], string, seq[string]) =
   var tbl = initTable[string, Module]()
-  var conj_tbl = initTable[string, Conj]()
-  var p2_conj_src = newSeq[string]()
+  var conjTbl = initTable[string, Conj]()
+  var rxPreConjSrc = newSeq[string]()
   var preModule = ""
 
   for s in splitLines(data):
@@ -77,40 +77,40 @@ proc parseData(data: string): (Table[string, Module], string, seq[string]) =
     if tokens[0][0] == '%':
       tbl[substr(tokens[0], 1)] = FlipFlop(dest: tokens[1].split(", "), level: Low)
     elif tokens[0][0] == '&':
-      conj_tbl[substr(tokens[0], 1)] = Conj(dest: tokens[1].split(", "), src: initTable[string, int]())
+      conjTbl[substr(tokens[0], 1)] = Conj(dest: tokens[1].split(", "), src: initTable[string, int]())
     else:
       tbl[substr(tokens[0])] = Module(dest: tokens[1].split(", "))
 
-  for conj in conj_tbl.keys:
+  for conj in conjTbl.keys:
     let conj = conj  # workaround, see https://github.com/nim-lang/Nim/issues/16740
     for k, v in tbl.pairs:
       if any(v.dest, proc (x: string): bool = x == conj) == true:
-        conj_tbl[conj].src[k] = Low
-    for k, v in conj_tbl.pairs:
+        conjTbl[conj].src[k] = Low
+    for k, v in conjTbl.pairs:
       if any(v.dest, proc (x: string): bool = x == conj) == true:
-        conj_tbl[conj].src[k] = Low
-    tbl[conj] = conj_tbl[conj]
+        conjTbl[conj].src[k] = Low
+    tbl[conj] = conjTbl[conj]
 
-    if conj_tbl[conj].dest.contains("rx"):
+    if conjTbl[conj].dest.contains("rx"):
       preModule = conj
-      p2_conj_src = toSeq(conj_tbl[conj].src.keys)
+      rxPreConjSrc = toSeq(conjTbl[conj].src.keys)
 
-  return (tbl, preModule, p2_conj_src)
+  return (tbl, preModule, rxPreConjSrc)
 
 when isMainModule:
   import std/cmdline
   if paramCount() > 0:
-    var (tbl, rx_pre, rx_src) = parseData(readFile(paramStr(1)).strip())
-    var q = initDeque[Pulse]()
+    var (tbl, rxPreConj, rxPreConjSrc) = parseData(readFile(paramStr(1)).strip())
 
-    if rx_src.len == 0:
+    if rxPreConjSrc.len == 0:
       raiseAssert("There is no conjunction module that outputs to the `rx` module.")
     var tmpTbl = initTable[string, seq[int]]()
-    for s in rx_src:
+    for s in rxPreConjSrc:
       tmpTbl[s] = newSeq[int]()
-    var rxChecker = RxChecker(modules: tmpTbl)
-    let rxCheckSet = toHashSet(rx_src)
+    var conjChecker = ConjChecker(modules: tmpTbl)
+    let conjInputs = toHashSet(rxPreConjSrc)
 
+    var q = initDeque[Pulse]()
     var i = 0
     while true:
       inc(i)
@@ -120,13 +120,13 @@ when isMainModule:
       while q.len > 0:
         pulse = q.popFirst()
 
-        if rxCheckSet.contains(pulse.src) and pulse.dest == rx_pre and pulse.level == High:
-          var tmp = rxChecker.hit(pulse.src, i)
+        if conjInputs.contains(pulse.src) and pulse.dest == rxPreConj and pulse.level == High:
+          var tmp = conjChecker.hit(pulse.src, i)
           if tmp.isSome:
             echo(lcm(tmp.get()))
             quit(QuitSuccess)
 
         if tbl.hasKey(pulse.dest) == false:
           continue
-        for pulse in tbl[pulse.dest].input(pulse):
-          q.addLast(pulse)
+        for p in tbl[pulse.dest].input(pulse):
+          q.addLast(p)
