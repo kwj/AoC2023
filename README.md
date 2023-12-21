@@ -23,6 +23,7 @@ URL: https://adventofcode.com/2023
 * [Day 17: Clumsy Crucible](./day_17/)
 * [Day 18: Lavaduct Lagoon](./day_18/)
 * [Day 19: Aplenty](./day_19/)
+* [Day 20: Pulse Propagation](./day_20/)
 
 ## Note
 
