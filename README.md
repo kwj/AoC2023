@@ -25,6 +25,7 @@ URL: https://adventofcode.com/2023
 * [Day 19: Aplenty](./day_19/)
 * [Day 20: Pulse Propagation](./day_20/)
 * [Day 21: Step Counter](./day_21/)
+* [Day 22: Sand Slabs](./day_22/)
 
 ## Note
 
