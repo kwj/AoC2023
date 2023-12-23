@@ -1,15 +1,13 @@
 # Day 10
 
-import std/strutils
-import std/tables
-
+import std/[strutils, tables]
 
 proc parseData(data: string): ((int, int), (int, int), Table[(int, int), char]) =
   var tbl = initTable[(int, int), char]()
   var sx, sy = -1
   var lines = splitLines(data)
-  let n_rows = len(lines)
-  let n_cols = len(lines[0])
+  let nRows = len(lines)
+  let nCols = len(lines[0])
 
   for x, line in mpairs(lines):
     for y, ch in mpairs(line):
@@ -17,8 +15,7 @@ proc parseData(data: string): ((int, int), (int, int), Table[(int, int), char]) 
       if ch == 'S':
         (sx, sy) = (x, y)
 
-  return ((n_rows, n_cols), (sx, sy), tbl)
-
+  return ((nRows, nCols), (sx, sy), tbl)
 
 # [IN]
 #  pipe: target pipe
@@ -42,7 +39,6 @@ proc nextDir(pipe: char, dir: char): (char, char) =
                ('7', 'N'): ('S', 'W'), ('7', 'E'): ('W', 'S')}.toTable
 
   return tbl[(pipe, dir)]
-
 
 # Find a pipe connected to the start(S[sx, sy]) and return its direction.
 proc initDir(sx: int, sy: int, tbl: Table[(int, int), char]): (char, char) =
@@ -104,36 +100,36 @@ when isMainModule:
   import std/cmdline
   if paramCount() > 0:
     let data = readFile(paramStr(1))
-    let ((n_rows, n_cols), (sx, sy), tbl) = parseData(data.strip())
-    var (from_dir, to_dir) = initDir(sx, sy, tbl)
+    let ((nRows, nCols), (sx, sy), tbl) = parseData(data.strip())
+    var (fromDir, toDir) = initDir(sx, sy, tbl)
 
-    var loop_pipe = initTable[(int, int), (char, char)]()
-    loop_pipe[(sx, sy)] = (from_dir, to_dir)
+    var loopPipe = initTable[(int, int), (char, char)]()
+    loopPipe[(sx, sy)] = (fromDir, toDir)
     var (x, y) = (sx, sy)
     while true:
-      (x, y) = getNextPipe(x, y, to_dir)
+      (x, y) = getNextPipe(x, y, toDir)
       if x != sx or y != sy:
-        (from_dir, to_dir) = nextDir(tbl[(x, y)], to_dir)
-        loop_pipe[(x, y)] = (from_dir, to_dir)
+        (fromDir, toDir) = nextDir(tbl[(x, y)], toDir)
+        loopPipe[(x, y)] = (fromDir, toDir)
         continue
       else:
         break
 
-    echo("Part one: ", len(loop_pipe) div 2)
+    echo("Part one: ", len(loopPipe) div 2)
 
     var flag = 0
     var cnt = 0
-    for x in countup(1, n_rows - 2):
-      for y in countup(0, n_cols - 1):
-        if loop_pipe.haskey((x, y)) == true:
-          (from_dir, to_dir) = loop_pipe[(x, y)]
-          if from_dir == 'S':
+    for x in countup(1, nRows - 2):
+      for y in countup(0, nCols - 1):
+        if loopPipe.haskey((x, y)) == true:
+          (fromDir, toDir) = loopPipe[(x, y)]
+          if fromDir == 'S':
             flag += 1
-          if to_dir == 'N':
+          if toDir == 'N':
             flag += 1
-          if from_dir == 'N':
+          if fromDir == 'N':
             flag -= 1
-          if to_dir == 'S':
+          if toDir == 'S':
             flag -= 1
         else:
           if flag != 0:

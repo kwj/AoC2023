@@ -9,14 +9,10 @@
     https://en.wikipedia.org/wiki/Pick%27s_theorem
 ]#
 
-import std/sequtils
-import std/strutils
-import std/tables
-
+import std/[sequtils, strutils, tables]
 
 type
   Point = tuple[x: int, y: int]
-
 
 proc parseData(data: string): (Point, Table[Point, char]) =
   var grid = initTable[Point, char]()
@@ -30,7 +26,6 @@ proc parseData(data: string): (Point, Table[Point, char]) =
         (sx, sy) = (x, y)
 
   return ((sx, sy), grid)
-
 
 # [IN]
 #  pipe: target pipe
@@ -55,12 +50,11 @@ proc nextDir(pipe: char, dir: char): char =
 
   return tbl[(pipe, dir)]
 
-
 # Find a pipe connected to the starting point (S), and return its direction and
 # the whether the starting point is a turn or not.
 proc initDir(s: Point, grid: Table[Point, char]): (char, bool) =
   var dirs: seq[char]
-  var is_turn: bool
+  var isTurn: bool
 
   if grid.getOrDefault((s.x - 1, s.y), '?') in {'7', '|', 'F'}:
     dirs.add('N')
@@ -72,18 +66,17 @@ proc initDir(s: Point, grid: Table[Point, char]): (char, bool) =
     dirs.add('W')
 
   if dirs[0] == 'E' and dirs[1] == 'W':
-    is_turn = false
+    isTurn = false
   elif dirs[0] == 'W' and dirs[1] == 'E':
-    is_turn = false
+    isTurn = false
   elif dirs[0] == 'N' and dirs[1] == 'S':
-    is_turn = false
+    isTurn = false
   elif dirs[0] == 'S' and dirs[1] == 'N':
-    is_turn = false
+    isTurn = false
   else:
-    is_turn = true
+    isTurn = true
 
-  return (dirs[0], is_turn)
-
+  return (dirs[0], isTurn)
 
 proc getNextPipe(x: int, y: int, dir: char): (int, int) =
   case dir
@@ -93,11 +86,9 @@ proc getNextPipe(x: int, y: int, dir: char): (int, int) =
     of 'W': return (x, y - 1)
     else: assert(false, "Invalid direction")
 
-
 proc partition[T](sq: seq[T]): seq[(T, T)] =
   for i in low(sq)..<high(sq):
     result.add((sq[i], sq[i+1]))
-
 
 proc calcArea(points: seq[(Point, Point)]): int =
   let lst = map(points, proc(tpl: (Point, Point)): int =
@@ -105,27 +96,26 @@ proc calcArea(points: seq[(Point, Point)]): int =
               p1.x * p2.y - p1.y * p2.x)
   result = abs(foldl(lst, a + b, 0)) div 2
 
-
 when isMainModule:
   import std/cmdline
   if paramCount() > 0:
     let data = readFile(paramStr(1))
     let (start, grid) = parseData(data.strip())
 
-    var (to_dir, is_turn) = initDir(start, grid)
-    var t_points = newSeq[Point]()
-    if is_turn == true:
-      t_points.add(start)
+    var (toDir, isTurn) = initDir(start, grid)
+    var turnPoints = newSeq[Point]()
+    if isTurn == true:
+      turnPoints.add(start)
     var (x, y) = start
     var steps = 0
     while true:
       steps += 1
-      (x, y) = getNextPipe(x, y, to_dir)
+      (x, y) = getNextPipe(x, y, toDir)
       if grid[(x, y)] in {'L', '7', 'F', 'J'}:
-        t_points.add((x, y))
+        turnPoints.add((x, y))
 
       if x != start.x or y != start.y:
-        to_dir = nextDir(grid[(x, y)], to_dir)
+        toDir = nextDir(grid[(x, y)], toDir)
         continue
       else:
         break
@@ -133,5 +123,5 @@ when isMainModule:
     echo("Part one: ", steps div 2)
 
     # Use Shoelace formula and Pick's theorem
-    t_points.add(t_points[0])
-    echo("Part two: ", calcArea(partition(t_points)) - (steps div 2) + 1)
+    turnPoints.add(turnPoints[0])
+    echo("Part two: ", calcArea(partition(turnPoints)) - (steps div 2) + 1)

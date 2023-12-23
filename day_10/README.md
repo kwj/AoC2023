@@ -2,7 +2,7 @@
 
 ## Requirement
 
-* [Nim](https://nim-lang.org/) (confirmed to work with Nim v2.0.0)
+* [Nim](https://nim-lang.org/) (confirmed to work with Nim v2.0.2)
 
 ## How to use
 
