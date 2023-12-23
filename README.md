@@ -26,8 +26,11 @@ URL: https://adventofcode.com/2023
 * [Day 20: Pulse Propagation](./day_20/)
 * [Day 21: Step Counter](./day_21/)
 * [Day 22: Sand Slabs](./day_22/)
+* [Day 23: A Long Walk](./day_23/)
 
 ## Note
 
 There are no input data files in this repository.
 Please get them from the AoC 2023 site.
+
+See [here](https://adventofcode.com/about#faq_copying) for the reasons.
