@@ -9,18 +9,18 @@
 (defn- parse-data
   [data]
   (loop [lines (map-indexed vector (str/split data #"\n"))
-         result []]
+         result (transient [])]
     (if (seq lines)
       (let [[id line] (first lines)
             v (mapv parse-long (str/split line #"\W+"))]
         (recur (next lines)
-               (conj result {:id (keyword (str id))
+               (conj! result {:id (keyword (str id))
                              :xy (for [x (range (nth v 0) (inc (nth v 3)))
                                        y (range (nth v 1) (inc (nth v 4)))]
                                    [x y])
                              :z1 (nth v 2)
                              :z2 (nth v 5)})))
-      (sort-by :z1 result))))
+      (sort-by :z1 (persistent! result)))))
 
 (defn- drop-brick
   [brick ^java.util.HashMap m]
