@@ -35,45 +35,47 @@
   [bricks]
   (let [height-map (java.util.HashMap.)]
     (loop [bricks bricks
-           floors {}
-           ceils {}]
+           lower-bricks {}
+           upper-bricks {}]
       (if (seq bricks)
         (let [[id floor-bricks] (drop-brick (first bricks) height-map)]
           (recur (next bricks)
-                 (assoc floors id floor-bricks)
+                 (assoc lower-bricks id floor-bricks)
                  (reduce (fn [m k] (assoc m k (conj (get m k #{}) id)))
-                         (assoc ceils id #{})
+                         (assoc upper-bricks id #{})
                          floor-bricks)))
-        [floors ceils]))))
+        [lower-bricks upper-bricks]))))
 
 (defn- p1
-  [floors ceils]
-  (loop [ks (keys ceils)
+  [lower-bricks upper-bricks]
+  (loop [vs (vals upper-bricks)
          cnt 0]
-    (if (seq ks)
-      (if (some #(= (count (% floors)) 1) ((first ks) ceils))
-        (recur (next ks) cnt)
-        (recur (next ks) (inc cnt)))
+    (if (seq vs)
+      (if (some #(= (count (% lower-bricks)) 1) (first vs))
+        (recur (next vs) cnt)
+        (recur (next vs) (inc cnt)))
       cnt)))
 
 (defn- p2
-  [floors ceils]
+  [lower-bricks upper-bricks]
   (let [cnt (atom 0)]
-    (loop [ks (keys ceils)]
+    (loop [ks (keys upper-bricks)]
       (if (seq ks)
-        (let [brick (first ks)]
-          (loop [q (apply conj (clojure.lang.PersistentQueue/EMPTY) (brick ceils))
-                 fallen-bricks #{brick}]
+        (let [id (first ks)]
+          (loop [q (apply conj (clojure.lang.PersistentQueue/EMPTY) (id upper-bricks))
+                 removed-bricks #{id}]
             (if (empty? q)
-              (swap! cnt + (dec (count fallen-bricks)))
-              (let [target (peek q)]
-                (if (clojure.set/subset? (target floors) fallen-bricks)
-                  (recur (apply conj (pop q) (target ceils)) (conj fallen-bricks target))
-                  (recur (pop q) fallen-bricks)))))
+              ;; Since what we are looking for is the number of other bricks that would fall
+              ;; due to the removal of one, we subtract 1 from the numbers of removed bricks.
+              (swap! cnt + (dec (count removed-bricks)))
+              (let [brick (peek q)]
+                (if (clojure.set/subset? (brick lower-bricks) removed-bricks)
+                  (recur (apply conj (pop q) (brick upper-bricks)) (conj removed-bricks brick))
+                  (recur (pop q) removed-bricks)))))
           (recur (next ks)))
         @cnt))))
 
 (when (seq *command-line-args*)
-  (let [[floors ceils] (drop-all-bricks (parse-data (slurp (first *command-line-args*))))]
-    (println "Part one:" (p1 floors ceils))
-    (println "Part two:" (p2 floors ceils))))
+  (let [[lower-bricks upper-bricks] (drop-all-bricks (parse-data (slurp (first *command-line-args*))))]
+    (println "Part one:" (p1 lower-bricks upper-bricks))
+    (println "Part two:" (p2 lower-bricks upper-bricks))))
