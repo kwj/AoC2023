@@ -65,8 +65,10 @@
           (loop [q (apply conj (clojure.lang.PersistentQueue/EMPTY) (id upper-bricks))
                  removed-bricks #{id}]
             (if (empty? q)
-              ;; Since what we are looking for is the number of other bricks that would fall
-              ;; due to the removal of one, we subtract 1 from the numbers of removed bricks.
+              ;; Since what we are looking for is the number of *other* bricks that would fall
+              ;; due to the removal of one, the first removed brick is not the target for count up.
+              ;; So we subtract 1 from the numbers of removed bricks, the result is the number of
+              ;; fallen bricks.
               (swap! cnt + (dec (count removed-bricks)))
               (let [brick (peek q)]
                 (if (clojure.set/subset? (brick lower-bricks) removed-bricks)
