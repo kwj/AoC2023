@@ -3,8 +3,8 @@
 # Day 23
 
 # Note:
-#   This solution doesn't use pruning. At the problem part 2, it would be more faster
-#   when the search cancels toward non-goal nodes at the junction before the goal node.
+#   This solution doesn't use pruning. At the problem part 2, it would be more faster when
+#   the search cancels toward non-goal nodes at the junction node before the goal node.
 
 import argparse
 import copy
@@ -109,6 +109,7 @@ def set_edge_info(nodes, is_slip=False):
     return nodes
 
 
+# DFS
 def find_longest_steps(node, acc, max_steps):
     if node.is_end is True:
         return max(acc, max_steps)
