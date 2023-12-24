@@ -2,7 +2,9 @@
 
 # Day 23
 
-# Note: This solution doesn't use pruning. If we use it, it will be faster.
+# Note:
+#   This solution doesn't use pruning. At the problem part 2, it would be more faster
+#   when the search cancels toward non-goal nodes at the junction before the goal node.
 
 import argparse
 import copy
