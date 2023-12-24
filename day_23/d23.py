@@ -2,6 +2,8 @@
 
 # Day 23
 
+# Note: This solution doesn't use pruning. If we use it, it will be faster.
+
 import argparse
 import copy
 import sys
@@ -52,7 +54,7 @@ def parse_maze(maze):
             if len(tmp) > 2:
                 nodes[(x, y)] = Node(x, y, tmp)
 
-    return (sx, sy), nodes
+    return nodes
 
 
 def set_adj_node(r, c, direct, nodes, is_slip=False):
@@ -99,8 +101,8 @@ def set_adj_node(r, c, direct, nodes, is_slip=False):
 
 def set_edge_info(nodes, is_slip=False):
     for pos, node in nodes.items():
-        while len(node.adj_dir) > 0:
-            set_adj_node(pos[0], pos[1], node.adj_dir.pop(), nodes, is_slip)
+        for direction in node.adj_dir:
+            set_adj_node(pos[0], pos[1], direction, nodes, is_slip)
 
     return nodes
 
@@ -127,8 +129,9 @@ if __name__ == '__main__':
     with args.infile as f:
         maze = [list(x) for x in f.read().splitlines()]
 
-    start_pos, nodes_p1 = parse_maze(maze)
+    nodes_p1 = parse_maze(maze)
     nodes_p2 = copy.deepcopy(nodes_p1)
+    start_pos = ((node.r, node.c) for node in nodes_p1.values() if node.is_start is True).__next__()
 
     set_edge_info(nodes_p1, is_slip=True)
     print("Part one:", find_longest_steps(nodes_p1[start_pos], 0, 0))
