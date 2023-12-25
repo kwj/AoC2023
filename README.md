@@ -27,6 +27,7 @@ URL: https://adventofcode.com/2023
 * [Day 21: Step Counter](./day_21/)
 * [Day 22: Sand Slabs](./day_22/)
 * [Day 23: A Long Walk](./day_23/)
+* [Day 24: Never Tell Me The Odds](./day_24/)
 
 ## Note
 
