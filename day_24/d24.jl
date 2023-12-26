@@ -59,7 +59,7 @@ function d24_p1(fname::String = "input"; MIN = 2 * 10^14, MAX = 4 * 10^14)
 end
 
 # Rock: (R_x, R_y, R_z) + t * (R_dx, R_dy, R_dz)
-# Hailstones: (H[i]_x, H[i]_y, H[i]_z) + t * (H[i]_dx, H[i]_dy, H[i]_dz)
+# Hailstones: (H[i]_x, H[i]_y, H[i]_z) + t[i] * (H[i]_dx, H[i]_dy, H[i]_dz)
 #
 # Think of this problem like a geocentric model. The rock is the origin of three-dimensional
 # space and we sit on it. From the rock view, our view, hailstones move as follows.
