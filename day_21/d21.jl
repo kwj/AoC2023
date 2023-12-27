@@ -88,8 +88,9 @@ function d21_p2(fname::String = "input")
     # vandermode matrix for x=0:2
     V = [0, 1, 2] .^ transpose([0, 1, 2])
 
-    # Va = cnt
-    #  --> a = inv(V) * cnt
+    # This matrix `V` is invertible since all `xᵢ` are distinct.
+    #   Va = cnt
+    #     --> a = inv(V) * cnt
     a = inv(V) * cnt
 
     # 26501365 steps = 65 + 131 * 202300 steps
