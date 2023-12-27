@@ -22,14 +22,14 @@
 
 (defn- possible?
   [thr-map game]
-  (and (<= (get-in game [:cubes :red] 0) (get thr-map :red))
-       (<= (get-in game [:cubes :blue] 0) (get thr-map :blue))
-       (<= (get-in game [:cubes :green] 0) (get thr-map :green))))
+  (and (<= (get-in game [:cubes :red] 0) (:red thr-map))
+       (<= (get-in game [:cubes :blue] 0) (:blue thr-map))
+       (<= (get-in game [:cubes :green] 0) (:green thr-map))))
 
 (when (seq *command-line-args*)
   (->> (line-seq (io/reader (first *command-line-args*)))
        (map make-game-info)
        (filter #(possible? {:red 12 :green 13 :blue 14} %))
-       (map #(get % :game))
+       (map #(:game %))
        (apply +)
        (println)))
