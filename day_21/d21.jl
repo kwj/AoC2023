@@ -22,96 +22,55 @@ function read_matrix(fname::AbstractString)
     stack(data)'
 end
 
-function next_cands(m)
-    res = zeros(Int64, size(m, 1), size(m, 2))
-    x::Vector{Vector{Int64}} = []
+function d21_p1(fname::String = "input")
+    M = read_matrix(fname)
+    starting_pos = findfirst(x -> x < 0, M)
+    M[starting_pos] = 1
 
-    for v in collect.(Tuple.(findall(x -> x == 1, m)))
-        push!(x, v + [1, 0])
-        push!(x, v + [-1, 0])
-        push!(x, v + [0, 1])
-        push!(x, v + [0, -1])
+    W = zeros(Int, size(M))
+    W[starting_pos] = 1
+
+    cnt = Int[]
+    for i in 1:64
+        W = reduce(.|, circshift.([W], [(1, 0), (-1, 0), (0, 1), (0, -1)])) .& M
     end
-    for ind in CartesianIndex.(Tuple.(unique(filter(v -> 1 <= v[1] <= size(m, 1) && 1 <= v[2] <= size(m, 2), x))))
-        res[ind] = 1
-    end
-    res
+    sum(W)
 end
 
-function d21_p1(fname::String = "input", max_steps::Int = 64)
+function d21_p2(fname::String = "input")
     m = read_matrix(fname)
     starting_pos = findfirst(x -> x < 0, m)
     m[starting_pos] = 1
 
-    w = zeros(Int64, size(m, 1), size(m, 2))
-    w[starting_pos] = 1
-    for i in 1:max_steps
-        w = (&).(next_cands(w), m)
-    end
-    println(sum(w))
-end
+    M = repeat(m, 3, 3)
+    W = zeros(Int, size(M))
+    W[starting_pos] = 1
 
-function get_num_tiles(m, ci, steps)
-    w = zeros(Int, size(m, 1), size(m, 2))
-    w[ci] = 1
-    for i in 1:steps
-        w = (&).(next_cands(w), m)
-    end
-    sum(w)
-end
-
-function get_num_tiles(m, ci, steps, small_cnt)
-    w = zeros(Int, size(m, 1), size(m, 2))
-    w[ci] = 1
-    n_small = 0
-    for i in 1:steps
-        w = (&).(next_cands(w), m)
-        if i == small_cnt
-            n_small = sum(w)
+    cnt = Int[]
+    for i in 1:(65 + 131 * 2)
+        W = reduce(.|, circshift.([W], [(1, 0), (-1, 0), (0, 1), (0, -1)])) .& M
+        if (i - 65) % 131 == 0
+            push!(cnt, sum(W))
         end
     end
-    sum(w), n_small
-end
 
-function get_P(m, ci)
-    w = zeros(Int, size(m, 1), size(m, 2))
-    w[ci] = 1
-    for i in 1:(65 + 64)
-        w = (&).(next_cands(w), m)
-    end
-    p0 = sum(w)
-    p1 = sum((&).(next_cands(w), m))
+    # f(x) = a1 + a2*x + a3*x^2
+    #
+    # x = 0 (after 65 + 131 * 0 steps), f(0) = cnt[1]
+    # x = 1 (after 65 + 131 * 1 steps), f(1) = cnt[2]
+    # x = 2 (after 65 + 131 * 2 steps), f(2) = cnt[3]
 
-    p0, p1
-end
+    # vandermode matrix for x=0:2
+    V = [0, 1, 2] .^ transpose([0, 1, 2])
 
-function d21_p2(fname::String = "input", max_steps::Int = 26501365)
-    m = read_matrix(fname)
-    starting_pos = findfirst(x -> x < 0, m)
-    m[starting_pos] = 1
-    sx, sy = Tuple(starting_pos)
+    # cnt = Va
+    # --> a = inv(V) * cnt
+    a = inv(V) * cnt
 
-    # N, E, S, W
-    n_N = get_num_tiles(m, CartesianIndex(size(m, 1), sy), 65 + 65)
-    n_E = get_num_tiles(m, CartesianIndex(sx, 1), 65 + 65)
-    n_S = get_num_tiles(m, CartesianIndex(1, sy), 65 + 65)
-    n_W = get_num_tiles(m, CartesianIndex(sx, size(m,2)), 65 + 65)
-
-    # NE, SE, SW, NW, n_ne, n_se, n_sw, n_nw
-    n_NE, n_ne = get_num_tiles(m, CartesianIndex(size(m, 1), 1), 130 + 65, 64)
-    n_SE, n_se = get_num_tiles(m, CartesianIndex(1, 1), 130 + 65, 64)
-    n_SW, n_sw = get_num_tiles(m, CartesianIndex(1, size(m, 2)), 130 + 65, 64)
-    n_NW, n_nw = get_num_tiles(m, CartesianIndex(size(m, 1), size(m, 2)), 130 + 65, 64)
-
-    # P0, P1
-    n_P0, n_P1 = get_P(m, starting_pos)
-
-    n_cycles = div(max_steps - 65, 131 * 2)
-    println(n_P0 * (2 * n_cycles - 1)^2 +
-          n_P1 * (2 * n_cycles)^2 +
-          (n_NE + n_SE + n_SW + n_NW) * (2 * n_cycles - 1) +
-          (n_ne + n_se + n_sw + n_nw) * (2 * n_cycles) +
-          (n_N + n_E + n_S + n_W))
+    # 26501365 steps = 65 + 131 * 202300 steps
+    # so, x = 202300.
+    # the answer is f(202300).
+    Int(transpose(202300 .^ (0:2)) * a)
 end
 
 end #module
