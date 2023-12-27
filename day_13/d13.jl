@@ -48,8 +48,7 @@ function map_to_matrix(s)
                    if elm == "." 0 else 1 end
                end
            end
-    m = hcat(data...)
-    transpose(m)
+    transpose(stack(data))
 end
 
 function find_horiz_reflections(m, smudge)
