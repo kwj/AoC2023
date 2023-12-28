@@ -15,7 +15,7 @@ function d11(fname::String, factor::Int)
                    if elm == "." 0 else 1 end
                end
            end
-    m = hcat(data...)
+    m = stack(data)
     x_gaps = findall(x -> iszero(m[x, :]), 1:size(m, 1))
     y_gaps = findall(y -> iszero(m[:, y]), 1:size(m, 2))
     galaxies = [[x, y] for x in 1:size(m, 1) for y in 1:size(m, 2) if m[x, y] == 1]

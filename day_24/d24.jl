@@ -98,7 +98,7 @@ function d24_p2(fname::String = "input")
                [-(vy0 - vy), vx0 - vx, py0 - py, -(px0 - px)], (py0 * vx0 - py * vx) - (px0 * vy0 - px * vy)
            end
 
-    A = transpose(hcat(getindex.(data, 1)...))
+    A = transpose(stack(getindex.(data, 1)))
     b = getindex.(data, 2)
 
     (Rx, Ry, Rdx, Rdy) = Int.(round.(A \ b))
