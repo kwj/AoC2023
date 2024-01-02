@@ -61,13 +61,14 @@ end
 # Rock: (R_x, R_y, R_z) + t * (R_dx, R_dy, R_dz)
 # Hailstones: (H[i]_x, H[i]_y, H[i]_z) + t[i] * (H[i]_dx, H[i]_dy, H[i]_dz)
 #
-# Think of this problem like a geocentric model. The rock is the origin of three-dimensional
-# space and we sit on it. From the rock view, our view, hailstones move as follows.
+# Think of this problem like a geocentric model. We sit on the rock. We don't feel like
+# we are moving because the rock is very large. So, we think we are at the origin of
+# three-dimensional space. From our point view, hailstones move as follows.
 #
 #   (H[i]_x - R_x, H[i]_y - R_y, H[i]_z - R_z) + t[i] * (H[i]_dx - R_dx, H[i]_dy - R_dy, H[i]_dz - R_dz)
 #
-# Every hailstone comes in a straight line toward the rock, the *origin*. So, the cross
-# product of hailstone's position vector and movement velocity vector is equal to 0.
+# All hailstones come in a straight line toward us, the *origin*. So, the cross product of
+# hailstone's initial position vector and movement velocity vector is equal to 0.
 # For simplicity, we only think movement in X-Y plane.
 #
 # Since the cross product is equal to 0:

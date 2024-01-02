@@ -27,7 +27,7 @@ def make_adj_info(lines):
     return adj
 
 
-# For each node in the set `S`, return the number of edges to nodes removed from `S`.
+# For a node `v` in the set `S`, return the number of edges connected to nodes other than `S`.
 def count_connections(v, adj, S):
     return len(adj[v] - S)
 

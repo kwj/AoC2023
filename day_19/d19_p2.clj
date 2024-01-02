@@ -47,7 +47,7 @@
 (defn- next-ranges-aux
   "Divide a range according to a condition and return a vector.
 
-   The first element of the vector is the range which meets the conditin,
+   The first element of the vector is the range which meets the condition,
    The second element is the range which doesn't meet the condition.
    If there is not a range, the element must be `nil`."
   [op n r]
